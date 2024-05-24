@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Movie Detective</string>
+    <string name="welcome_login">Welcome back, login to your account.</string>
+    <string name="enter_email">Enter your email</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="reenter_password">Enter your password</string>
+    <string name="enter_name">Enter your name</string>
+    <string name="enter_surname">Enter your surname</string>
+    <string name="sing_in">Sign In</string>
+    <string name="sing_up">Sign Up</string>
+    <string name="dont_have_acc">Don\'t have an account? Sign Up</string>
+    <string name="register_text">Welcome, register for save movies &amp; shows and more feature</string>
+    <string name="already_have_acc">Already have an account? Sign In</string>
+    <string name="name">Name</string>
+    <string name="email_validation_error">Please enter a valid email address</string>
+    <string name="name_validation_error">Name should only consist of letters</string>
+    <string name="surname_validation_error">Surname should only consist of letters</string>
+    <string name="password_error_title">Password must be;</string>
+    <string name="password_error_one">at least 8 characters</string>
+    <string name="password_error_two">a digit must occur at least once</string>
+    <string name="password_error_three">a lower case letter must occur at least once</string>
+    <string name="password_error_four">an upper case letter must occur at least once</string>
+    <string name="show_password">Show password</string>
+    <string name="hide_password">Hide password</string>
+    <string name="correct">Correct</string>
+    <string name="wrong">Wrong</string>
+</resources>

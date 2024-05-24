@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "416645330589",
+    "project_id": "moviedetective-4b7c3",
+    "storage_bucket": "moviedetective-4b7c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:416645330589:android:8cbd874c5c93525c1a8674",
+        "android_client_info": {
+          "package_name": "com.softcross.moviedetective"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjb8Ykfalbw7xX9ZlzIiT49ZuGFbJwE5I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
