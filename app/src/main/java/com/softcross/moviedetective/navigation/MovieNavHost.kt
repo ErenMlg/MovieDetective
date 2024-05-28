@@ -6,11 +6,8 @@ import androidx.navigation.compose.NavHost
 
 @Composable
 fun MovieNavHost(
-    navController: NavHostController
 ){
     
-    NavHost(navController = navController, startDestination = LoginScreen.route) {
 
-    }
 
 }

@@ -88,6 +88,9 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     //Lottie
     implementation(libs.com.airbnb.android.lottie)
+    //Coil
+    implementation(libs.coil.kt.compose)
+
 
 
 }

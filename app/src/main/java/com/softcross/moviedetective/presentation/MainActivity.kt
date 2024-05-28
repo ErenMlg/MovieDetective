@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -26,9 +27,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsAnimationCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.softcross.moviedetective.R
+import com.softcross.moviedetective.presentation.home.HomeScreen
 import com.softcross.moviedetective.presentation.signin.LoginScreen
 import com.softcross.moviedetective.presentation.signup.RegisterScreen
 import com.softcross.moviedetective.presentation.theme.MovieDetectiveTheme
@@ -38,6 +42,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
         enableEdgeToEdge()
         setContent {
             MovieDetectiveTheme {
@@ -46,6 +53,7 @@ class MainActivity : ComponentActivity() {
                         R.color.white
                     )
                 Scaffold(
+                    contentWindowInsets = WindowInsets.safeDrawing,
                     modifier = Modifier
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
@@ -53,8 +61,9 @@ class MainActivity : ComponentActivity() {
                     Box(
                         Modifier
                             .padding(innerPadding)
-                            .consumeWindowInsets(innerPadding)) {
-                        RegisterScreen()
+                            .consumeWindowInsets(innerPadding)
+                    ) {
+                        HomeScreen()
                     }
                 }
             }

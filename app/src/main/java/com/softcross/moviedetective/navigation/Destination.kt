@@ -1,5 +1,7 @@
 package com.softcross.moviedetective.navigation
 
+import androidx.navigation.navArgument
+
 interface Destination {
     val route: String
 }
@@ -15,7 +17,4 @@ object RegisterScreen : Destination {
 object HomeScreen : Destination{
     override val route: String = "home"
     val routeWithArgs = "$route/$"
-    fun routeWithArgs(){
-
-    }
 }
