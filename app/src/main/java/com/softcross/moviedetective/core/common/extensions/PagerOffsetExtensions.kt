@@ -15,3 +15,8 @@ fun PagerState.startOffsetForPage(page: Int): Float {
 fun PagerState.endOffsetForPage(page: Int): Float {
     return offsetForPage(page).coerceAtMost(0f)
 }
+
+@OptIn(ExperimentalFoundationApi::class)
+fun PagerState.calculateCurrentOffsetForPage(page: Int): Float {
+    return (currentPage - page) + currentPageOffsetFraction
+}

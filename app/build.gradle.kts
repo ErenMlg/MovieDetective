@@ -1,3 +1,7 @@
+import com.android.build.gradle.internal.scope.ProjectInfo.Companion.getBaseName
+import org.jetbrains.kotlin.konan.properties.Properties
+
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -7,24 +11,37 @@ plugins {
 }
 
 android {
-    namespace = "com.softcross.moviedetective"
-    compileSdk = 34
+    namespace = libs.versions.namespace.get()
+    compileSdk = libs.versions.compileSDK.get().toInt()
 
     defaultConfig {
-        applicationId = "com.softcross.moviedetective"
-        minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = libs.versions.applicationID.get()
+        minSdk = libs.versions.minSDK.get().toInt()
+        targetSdk = libs.versions.targetSDK.get().toInt()
+        versionCode = libs.versions.versionCode.get().toInt()
+        versionName = libs.versions.versionName.get()
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = libs.versions.testInstrumentationRunner.get()
         vectorDrawables {
             useSupportLibrary = true
         }
-    }
 
-    testOptions {
-        unitTests.isReturnDefaultValues = true
+        androidResources {
+            generateLocaleConfig = true
+        }
+
+        buildFeatures {
+            buildConfig = true
+        }
+
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+
+        buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
+        buildConfigField("String", "MOVIE_BASE_URL", "\"https://api.themoviedb.org/3/\"")
+        buildConfigField("String", "POSTER_BASE_PATH", "\"https://image.tmdb.org/t/p/original\"")
+
+
     }
 
     buildTypes {
@@ -37,18 +54,23 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = libs.versions.jvmTarget.get()
     }
+
+
     buildFeatures {
         compose = true
     }
+
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+        kotlinCompilerExtensionVersion = libs.versions.kotlinCompilerExtensionVersion.get()
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -90,7 +112,9 @@ dependencies {
     implementation(libs.com.airbnb.android.lottie)
     //Coil
     implementation(libs.coil.kt.compose)
-
+    //Retrofit
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.gson)
 
 
 }
