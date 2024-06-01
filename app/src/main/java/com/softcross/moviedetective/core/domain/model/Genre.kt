@@ -6,6 +6,6 @@ import androidx.compose.runtime.Stable
 @Immutable
 @Stable
 data class Genre(
-    val genreID:String,
+    val genreID:Int,
     val genreName:String
 )

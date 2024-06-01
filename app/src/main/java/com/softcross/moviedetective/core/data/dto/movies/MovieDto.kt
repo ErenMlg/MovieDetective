@@ -1,15 +1,15 @@
-package com.softcross.moviedetective.core.data.model.dto.movies
+package com.softcross.moviedetective.core.data.dto.movies
 
 import com.google.gson.annotations.SerializedName
 
-data class Movie(
+data class MovieDto(
     @SerializedName("id")
     val id: Int,
     @SerializedName("title")
     val title: String,
     @SerializedName("vote_average")
     val voteAverage: Float,
-    @SerializedName("genres")
+    @SerializedName("genre_ids")
     val genresID: List<Int>,
     @SerializedName("poster_path")
     val image: String?,
@@ -18,5 +18,5 @@ data class Movie(
     @SerializedName("overview")
     val overview: String,
     @SerializedName("runtime")
-    val runtime: Int
+    val runtime: Int?
 )

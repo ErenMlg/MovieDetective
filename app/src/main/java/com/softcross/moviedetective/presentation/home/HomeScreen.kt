@@ -1,6 +1,5 @@
 package com.softcross.moviedetective.presentation.home
 
-import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.graphics.RenderEffect
 import android.graphics.Shader
@@ -10,7 +9,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,10 +20,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsEndWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -39,21 +35,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asComposeRenderEffect
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.Group
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
@@ -64,548 +53,259 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.softcross.moviedetective.R
-import com.softcross.moviedetective.core.common.CalculateRemainingDays
-import com.softcross.moviedetective.core.common.bouncingClickable
+import com.softcross.moviedetective.core.common.extensions.bouncingClickable
+import com.softcross.moviedetective.core.common.extensions.calculateRemainingDays
 import com.softcross.moviedetective.core.common.extensions.startOffsetForPage
 import com.softcross.moviedetective.core.domain.model.Genre
-import com.softcross.moviedetective.core.domain.model.Movie
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
-import java.text.SimpleDateFormat
-import java.time.Duration
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
-import java.time.temporal.Temporal
+import com.softcross.moviedetective.core.domain.model.Movie
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
     val genres = listOf(
-        Genre("1", "Action"),
-        Genre("3", "Adventure"),
-        Genre("2", "Horror"),
-        Genre("25", "Western"),
-        Genre("26", "SciFin"),
-        Genre("23", "Action"),
-        Genre("212", "Action"),
-        Genre("278", "Action"),
-        Genre("2890", "Action"),
-        Genre("96", "Action"),
-        Genre("20", "Action"),
-        Genre("223", "Action"),
-        Genre("245", "Action"),
+        Genre(1, "Action"),
+        Genre(3, "Adventure"),
+        Genre(2, "Horror"),
+        Genre(25, "Western"),
+        Genre(26, "SciFin"),
+        Genre(23, "Action"),
+        Genre(212, "Action"),
+        Genre(278, "Action"),
+        Genre(2890, "Action"),
+        Genre(96, "Action"),
+        Genre(20, "Action"),
+        Genre(223, "Action"),
+        Genre(245, "Action"),
     )
     val scrollState = rememberScrollState()
     val fakeMovies = listOf(
         Movie(
-            movieID = "pretium",
-            movieName = "Randall Peck",
-            description = "ignota",
-            genres = listOf(
-                Genre("1", "Action"),
-                Genre("23", "Horror")
-            ),
-            imdb = 2.3f,
-            releaseDate = "2024-05-31",
-            movieImage = "fastidii"
-        ),
-        Movie(
-            movieID = "proin",
-            movieName = "Stephan Hill",
-            description = "risus",
-            genres = listOf(
-                Genre("13", "Action")
-            ),
-            imdb = 6.7f,
-            releaseDate = "2020-06-27",
-            movieImage = "fermentum"
-        ),
-        Movie(
-            movieID = "has",
-            movieName = "Abby Holman",
-            description = "quaestio",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("112", "Mystery")
-            ),
-            imdb = 10.11f,
-            releaseDate = "2024-07-27",
-            movieImage = "gravida"
-        ),
-        Movie(
-            movieID = "ponderum",
+            movieID = 143,
             movieName = "Wilma Arnold",
             description = "feugait",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("156", "Science Fiction")
-            ),
-            imdb = 14.15f,
-            releaseDate = "2024-09-27",
-            movieImage = "tempus"
-        ),
-        Movie(
-            movieID = "pretium",
-            movieName = "Randall Peck",
-            description = "ignota",
-            genres = listOf(
-                Genre("1", "Action"),
-                Genre("123", "Horror")
-            ),
-            imdb = 2.3f,
-            releaseDate = "2024-05-31",
-            movieImage = "fastidii"
-        ),
-        Movie(
-            movieID = "proin",
-            movieName = "Stephan Hill",
-            description = "risus",
-            genres = listOf(
-                Genre("167", "Action")
-            ),
-            imdb = 6.7f,
-            releaseDate = "2020-06-27",
-            movieImage = "fermentum"
-        ),
-        Movie(
-            movieID = "has",
-            movieName = "Abby Holman",
-            description = "quaestio",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("178", "Mystery")
-            ),
-            imdb = 10.11f,
-            releaseDate = "2024-07-27",
-            movieImage = "gravida"
-        ),
-        Movie(
-            movieID = "ponderum",
-            movieName = "Wilma Arnold",
-            description = "feugait",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("112", "Science Fiction")
-            ),
+            genres = listOf(1,2),
             imdb = 14.15f,
             releaseDate = "2024-09-27",
             movieImage = "tempus"
         ), Movie(
-            movieID = "pretium",
+            movieID = 457,
             movieName = "Randall Peck",
             description = "ignota",
-            genres = listOf(
-                Genre("1", "Action"),
-                Genre("1567", "Horror")
-            ),
+            genres = listOf(1,2),
             imdb = 2.3f,
             releaseDate = "2024-05-31",
             movieImage = "fastidii"
         ),
         Movie(
-            movieID = "proin",
+            movieID = 654,
             movieName = "Stephan Hill",
             description = "risus",
-            genres = listOf(
-                Genre("1", "Action")
-            ),
+            genres = listOf(1,2),
             imdb = 6.7f,
             releaseDate = "2020-06-27",
             movieImage = "fermentum"
         ),
         Movie(
-            movieID = "has",
+            movieID = 43,
             movieName = "Abby Holman",
             description = "quaestio",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("167", "Mystery")
-            ),
+            genres = listOf(1,2),
             imdb = 10.11f,
             releaseDate = "2024-07-27",
             movieImage = "gravida"
         ),        Movie(
-            movieID = "pretium",
+            movieID = 342,
             movieName = "Randall Peck",
             description = "ignota",
-            genres = listOf(
-                Genre("1", "Action"),
-                Genre("23", "Horror")
-            ),
+            genres = listOf(1,2),
             imdb = 2.3f,
             releaseDate = "2024-05-31",
             movieImage = "fastidii"
         ),
         Movie(
-            movieID = "proin",
+            movieID = 5243,
             movieName = "Stephan Hill",
             description = "risus",
-            genres = listOf(
-                Genre("13", "Action")
-            ),
+            genres = listOf(1,2),
             imdb = 6.7f,
             releaseDate = "2020-06-27",
             movieImage = "fermentum"
         ),
         Movie(
-            movieID = "has",
+            movieID = 23546,
             movieName = "Abby Holman",
             description = "quaestio",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("112", "Mystery")
-            ),
+            genres = listOf(1,2),
             imdb = 10.11f,
             releaseDate = "2024-07-27",
             movieImage = "gravida"
         ),
         Movie(
-            movieID = "ponderum",
+            movieID = 32453,
             movieName = "Wilma Arnold",
             description = "feugait",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("156", "Science Fiction")
-            ),
+            genres = listOf(1,2),
             imdb = 14.15f,
             releaseDate = "2024-09-27",
             movieImage = "tempus"
         ),
         Movie(
-            movieID = "pretium",
+            movieID = 124353,
             movieName = "Randall Peck",
             description = "ignota",
-            genres = listOf(
-                Genre("1", "Action"),
-                Genre("123", "Horror")
-            ),
+            genres = listOf(1,2),
             imdb = 2.3f,
             releaseDate = "2024-05-31",
             movieImage = "fastidii"
         ),
         Movie(
-            movieID = "proin",
+            movieID = 132546,
             movieName = "Stephan Hill",
             description = "risus",
-            genres = listOf(
-                Genre("167", "Action")
-            ),
+            genres = listOf(1,2),
             imdb = 6.7f,
             releaseDate = "2020-06-27",
             movieImage = "fermentum"
         ),
         Movie(
-            movieID = "has",
+            movieID = 14354,
             movieName = "Abby Holman",
             description = "quaestio",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("178", "Mystery")
-            ),
+            genres = listOf(1,2),
             imdb = 10.11f,
             releaseDate = "2024-07-27",
             movieImage = "gravida"
         ),
         Movie(
-            movieID = "ponderum",
+            movieID = 135246,
             movieName = "Wilma Arnold",
             description = "feugait",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("112", "Science Fiction")
-            ),
+            genres = listOf(1,2),
             imdb = 14.15f,
             releaseDate = "2024-09-27",
             movieImage = "tempus"
         ), Movie(
-            movieID = "pretium",
+            movieID = 12435,
             movieName = "Randall Peck",
             description = "ignota",
-            genres = listOf(
-                Genre("1", "Action"),
-                Genre("1567", "Horror")
-            ),
+            genres = listOf(1,2),
             imdb = 2.3f,
             releaseDate = "2024-05-31",
             movieImage = "fastidii"
         ),
         Movie(
-            movieID = "proin",
+            movieID = 14325,
             movieName = "Stephan Hill",
             description = "risus",
-            genres = listOf(
-                Genre("1", "Action")
-            ),
+            genres = listOf(1,2),
             imdb = 6.7f,
             releaseDate = "2020-06-27",
             movieImage = "fermentum"
         ),
         Movie(
-            movieID = "has",
+            movieID = 124325,
             movieName = "Abby Holman",
             description = "quaestio",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("167", "Mystery")
-            ),
+            genres = listOf(1,2),
             imdb = 10.11f,
             releaseDate = "2024-07-27",
             movieImage = "gravida"
         ),        Movie(
-            movieID = "pretium",
+            movieID = 1354,
             movieName = "Randall Peck",
             description = "ignota",
-            genres = listOf(
-                Genre("1", "Action"),
-                Genre("23", "Horror")
-            ),
+            genres = listOf(1,2),
             imdb = 2.3f,
             releaseDate = "2024-05-31",
             movieImage = "fastidii"
         ),
         Movie(
-            movieID = "proin",
+            movieID = 12435,
             movieName = "Stephan Hill",
             description = "risus",
-            genres = listOf(
-                Genre("13", "Action")
-            ),
+            genres = listOf(1,2),
             imdb = 6.7f,
             releaseDate = "2020-06-27",
             movieImage = "fermentum"
         ),
         Movie(
-            movieID = "has",
+            movieID = 135246,
             movieName = "Abby Holman",
             description = "quaestio",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("112", "Mystery")
-            ),
+            genres = listOf(1,2),
             imdb = 10.11f,
             releaseDate = "2024-07-27",
             movieImage = "gravida"
         ),
         Movie(
-            movieID = "ponderum",
+            movieID = 1435,
             movieName = "Wilma Arnold",
             description = "feugait",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("156", "Science Fiction")
-            ),
+            genres = listOf(1,2),
             imdb = 14.15f,
             releaseDate = "2024-09-27",
             movieImage = "tempus"
         ),
         Movie(
-            movieID = "pretium",
+            movieID = 3543,
             movieName = "Randall Peck",
             description = "ignota",
-            genres = listOf(
-                Genre("1", "Action"),
-                Genre("123", "Horror")
-            ),
+            genres = listOf(1,2),
             imdb = 2.3f,
             releaseDate = "2024-05-31",
             movieImage = "fastidii"
         ),
         Movie(
-            movieID = "proin",
+            movieID = 546,
             movieName = "Stephan Hill",
             description = "risus",
-            genres = listOf(
-                Genre("167", "Action")
-            ),
+            genres = listOf(1,2),
             imdb = 6.7f,
             releaseDate = "2020-06-27",
             movieImage = "fermentum"
         ),
         Movie(
-            movieID = "has",
+            movieID = 88,
             movieName = "Abby Holman",
             description = "quaestio",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("178", "Mystery")
-            ),
+            genres = listOf(1,2),
             imdb = 10.11f,
             releaseDate = "2024-07-27",
             movieImage = "gravida"
         ),
         Movie(
-            movieID = "ponderum",
+            movieID = 67,
             movieName = "Wilma Arnold",
             description = "feugait",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("112", "Science Fiction")
-            ),
+            genres = listOf(1,2),
             imdb = 14.15f,
             releaseDate = "2024-09-27",
             movieImage = "tempus"
         ), Movie(
-            movieID = "pretium",
+            movieID = 54,
             movieName = "Randall Peck",
             description = "ignota",
-            genres = listOf(
-                Genre("1", "Action"),
-                Genre("1567", "Horror")
-            ),
+            genres = listOf(1,2),
             imdb = 2.3f,
             releaseDate = "2024-05-31",
             movieImage = "fastidii"
         ),
         Movie(
-            movieID = "proin",
+            movieID = 123,
             movieName = "Stephan Hill",
             description = "risus",
-            genres = listOf(
-                Genre("1", "Action")
-            ),
+            genres = listOf(1,2),
             imdb = 6.7f,
             releaseDate = "2020-06-27",
             movieImage = "fermentum"
         ),
         Movie(
-            movieID = "has",
+            movieID = 132,
             movieName = "Abby Holman",
             description = "quaestio",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("167", "Mystery")
-            ),
-            imdb = 10.11f,
-            releaseDate = "2024-07-27",
-            movieImage = "gravida"
-        ),        Movie(
-            movieID = "pretium",
-            movieName = "Randall Peck",
-            description = "ignota",
-            genres = listOf(
-                Genre("1", "Action"),
-                Genre("23", "Horror")
-            ),
-            imdb = 2.3f,
-            releaseDate = "2024-05-31",
-            movieImage = "fastidii"
-        ),
-        Movie(
-            movieID = "proin",
-            movieName = "Stephan Hill",
-            description = "risus",
-            genres = listOf(
-                Genre("13", "Action")
-            ),
-            imdb = 6.7f,
-            releaseDate = "2020-06-27",
-            movieImage = "fermentum"
-        ),
-        Movie(
-            movieID = "has",
-            movieName = "Abby Holman",
-            description = "quaestio",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("112", "Mystery")
-            ),
-            imdb = 10.11f,
-            releaseDate = "2024-07-27",
-            movieImage = "gravida"
-        ),
-        Movie(
-            movieID = "ponderum",
-            movieName = "Wilma Arnold",
-            description = "feugait",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("156", "Science Fiction")
-            ),
-            imdb = 14.15f,
-            releaseDate = "2024-09-27",
-            movieImage = "tempus"
-        ),
-        Movie(
-            movieID = "pretium",
-            movieName = "Randall Peck",
-            description = "ignota",
-            genres = listOf(
-                Genre("1", "Action"),
-                Genre("123", "Horror")
-            ),
-            imdb = 2.3f,
-            releaseDate = "2024-05-31",
-            movieImage = "fastidii"
-        ),
-        Movie(
-            movieID = "proin",
-            movieName = "Stephan Hill",
-            description = "risus",
-            genres = listOf(
-                Genre("167", "Action")
-            ),
-            imdb = 6.7f,
-            releaseDate = "2020-06-27",
-            movieImage = "fermentum"
-        ),
-        Movie(
-            movieID = "has",
-            movieName = "Abby Holman",
-            description = "quaestio",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("178", "Mystery")
-            ),
-            imdb = 10.11f,
-            releaseDate = "2024-07-27",
-            movieImage = "gravida"
-        ),
-        Movie(
-            movieID = "ponderum",
-            movieName = "Wilma Arnold",
-            description = "feugait",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("112", "Science Fiction")
-            ),
-            imdb = 14.15f,
-            releaseDate = "2024-09-27",
-            movieImage = "tempus"
-        ), Movie(
-            movieID = "pretium",
-            movieName = "Randall Peck",
-            description = "ignota",
-            genres = listOf(
-                Genre("1", "Action"),
-                Genre("1567", "Horror")
-            ),
-            imdb = 2.3f,
-            releaseDate = "2024-05-31",
-            movieImage = "fastidii"
-        ),
-        Movie(
-            movieID = "proin",
-            movieName = "Stephan Hill",
-            description = "risus",
-            genres = listOf(
-                Genre("1", "Action")
-            ),
-            imdb = 6.7f,
-            releaseDate = "2020-06-27",
-            movieImage = "fermentum"
-        ),
-        Movie(
-            movieID = "has",
-            movieName = "Abby Holman",
-            description = "quaestio",
-            genres = listOf(
-                Genre("1", "Drama"),
-                Genre("167", "Mystery")
-            ),
+            genres = listOf(1,2),
             imdb = 10.11f,
             releaseDate = "2024-07-27",
             movieImage = "gravida"
@@ -853,7 +553,7 @@ fun HeaderContentItem(movie: Movie, modifier: Modifier) {
                 modifier = Modifier.padding(start = 16.dp)
             ) {
                 items(movie.genres) {
-                    GenreItem(genre = it)
+                    GenreItem(it)
                 }
             }
             Text(
@@ -890,7 +590,7 @@ fun HeaderContentItem(movie: Movie, modifier: Modifier) {
 }
 
 @Composable
-fun GenreItem(genre: Genre) {
+fun GenreItem(genreID: Int) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent
@@ -908,7 +608,7 @@ fun GenreItem(genre: Genre) {
             )
         ) {
             Text(
-                text = genre.genreName,
+                text = "genre.genreName",
                 fontSize = 8.sp,
                 fontFamily = FontFamily(Font(R.font.poppins_semi_bold)),
                 color = Color.White,
@@ -947,7 +647,7 @@ fun ComingSoon(movieList: List<Movie>) {
                     )
                     Card(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "${CalculateRemainingDays(it.releaseDate)} days",
+                            text = "${calculateRemainingDays(it.releaseDate)} days",
                             fontSize = 10.sp,
                             fontFamily = FontFamily(Font(R.font.poppins_regular)),
                             textAlign = TextAlign.Center,
@@ -1134,11 +834,8 @@ fun DiscoverMovie(movieList: List<Movie>, genreList: List<Genre>) {
                     LazyRow(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
                         items(
                             movie.genres,
-                            key = {
-                                it.genreID
-                            }
                         ) {
-                            GenreItem(genre = it)
+                            GenreItem(it)
                         }
                     }
                     Row(

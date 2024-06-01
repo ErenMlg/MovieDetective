@@ -1,4 +1,4 @@
-package com.softcross.moviedetective.core.common
+package com.softcross.moviedetective.core.common.extensions
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 
 enum class ViewState { Pressed, Idle }
+
 fun Modifier.bouncingClickable(
     onClick: () -> Unit
 ) = composed {

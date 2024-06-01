@@ -6,10 +6,10 @@ import androidx.compose.runtime.Stable
 @Immutable
 @Stable
 data class Movie(
-    val movieID: String,
+    val movieID: Int,
     val movieName: String,
     val description: String,
-    val genres: List<Genre>,
+    val genres: List<Int>,
     val imdb: Float,
     val releaseDate: String,
     val movieImage: String,

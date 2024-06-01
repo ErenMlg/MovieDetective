@@ -1,8 +1,8 @@
-package com.softcross.moviedetective.core.data.model.dto.movieGenres
+package com.softcross.moviedetective.core.data.dto.genre
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieGenres(
+data class GenreDto(
     @SerializedName("id")
     val id : Int,
     @SerializedName("name")

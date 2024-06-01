@@ -1,10 +1,10 @@
-package com.softcross.moviedetective.core.data.model.dto.actors
+package com.softcross.moviedetective.core.data.dto.movies
 
 import com.google.gson.annotations.SerializedName
 
-data class ActorResponse(
+data class MoviesResponse(
     @SerializedName("page")
     val page: Int,
     @SerializedName("results")
-    val results: List<Actor>
+    val data: List<MovieDto>
 )

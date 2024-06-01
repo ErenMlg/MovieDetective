@@ -26,10 +26,6 @@ android {
             useSupportLibrary = true
         }
 
-        androidResources {
-            generateLocaleConfig = true
-        }
-
         buildFeatures {
             buildConfig = true
         }
@@ -91,9 +87,16 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.androidx.monitor)
 
+    testImplementation(libs.junit)
+    //Mock
     testImplementation(libs.mockk)
     testImplementation(libs.mockito.core)
-    testImplementation(libs.junit)
+    //MockWebServer
+    testImplementation(libs.mockwebserver)
+    //Turbine
+    testImplementation(libs.app.cash.turbine.turbine)
+    //Truth
+    testImplementation(libs.truth)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

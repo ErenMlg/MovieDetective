@@ -1,4 +1,4 @@
-package com.softcross.moviedetective.core.common
+package com.softcross.moviedetective.core.common.extensions
 
 import android.view.ViewTreeObserver
 import androidx.compose.foundation.ExperimentalFoundationApi
