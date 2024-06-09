@@ -3,7 +3,7 @@ package com.softcross.moviedetective.core.data.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.softcross.moviedetective.core.common.Resource
-import com.softcross.moviedetective.core.domain.model.UserModel
+import com.softcross.moviedetective.core.domain.model.User
 import com.softcross.moviedetective.core.domain.repository.FirebaseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -17,7 +17,7 @@ class FirebaseRepositoryImpl @Inject constructor(
 ) : FirebaseRepository {
 
 
-    override fun loginUser(email: String, password: String): Flow<Resource<UserModel>> {
+    override fun loginUser(email: String, password: String): Flow<Resource<User>> {
         return flow {
             emit(Resource.Loading)
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
@@ -35,13 +35,13 @@ class FirebaseRepositoryImpl @Inject constructor(
         password: String,
         name: String,
         surname: String
-    ): Flow<Resource<UserModel>> {
+    ): Flow<Resource<User>> {
         return flow {
             emit(Resource.Loading)
             val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             if (result.user != null) {
                 val registeredUserModel =
-                    UserModel(result.user!!.uid, name, surname, "$name $surname")
+                    User(result.user!!.uid, name, surname, "$name $surname")
                 val finalResult = addUserDetailsToFirestore(registeredUserModel)
                 emit(Resource.Success(finalResult))
             }
@@ -50,7 +50,7 @@ class FirebaseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addUserDetailsToFirestore(userModel: UserModel): UserModel {
+    override suspend fun addUserDetailsToFirestore(userModel: User): User {
         val firestoreUsers = firebaseFirestore.collection("Users").document(userModel.id)
         firestoreUsers.set(
             hashMapOf(
@@ -63,12 +63,12 @@ class FirebaseRepositoryImpl @Inject constructor(
         return userModel
     }
 
-    override suspend fun getUserDetailFromFirestore(userID: String): UserModel {
+    override suspend fun getUserDetailFromFirestore(userID: String): User {
         val firestoreDoc = firebaseFirestore.collection("Users").document(userID).get().await()
         if (firestoreDoc.data != null) {
             val name = firestoreDoc.data?.get("Name").toString()
             val surname = firestoreDoc.data?.get("Surname").toString()
-            val userModel = UserModel(
+            val userModel = User(
                 userID,
                 name,
                 surname,

@@ -6,5 +6,5 @@ data class ActorResponse(
     @SerializedName("page")
     val page: Int,
     @SerializedName("results")
-    val results: List<Actor>
+    val results: List<ActorDto>
 )

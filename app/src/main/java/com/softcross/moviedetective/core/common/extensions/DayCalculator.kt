@@ -2,10 +2,22 @@ package com.softcross.moviedetective.core.common.extensions
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun calculateRemainingDays(date: String): Long = ChronoUnit.DAYS.between(
     LocalDate.now(),
-    LocalDate.parse(date))
+    LocalDate.parse(date)
+)
+
+fun String.convertToFormattedDate(): String {
+    val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    val outputFormatter = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH)
+    val date = LocalDate.parse(this, inputFormatter)
+    return date.format(outputFormatter)
+}

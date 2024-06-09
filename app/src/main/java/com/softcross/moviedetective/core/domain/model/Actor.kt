@@ -5,9 +5,9 @@ import androidx.compose.runtime.Stable
 
 @Immutable
 @Stable
-data class UserModel(
-    val id: String = "",
-    val name: String = "",
-    val surname: String = "",
-    val fullName: String = ""
+data class Actor(
+    val id: Int,
+    val name: String,
+    val gender: Int,
+    val image: String
 )

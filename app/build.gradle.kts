@@ -88,19 +88,26 @@ dependencies {
     implementation(libs.androidx.monitor)
 
     testImplementation(libs.junit)
-    //Mock
+    //Mock&Mockito
     testImplementation(libs.mockk)
     testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
     //MockWebServer
     testImplementation(libs.mockwebserver)
     //Turbine
     testImplementation(libs.app.cash.turbine.turbine)
     //Truth
     testImplementation(libs.truth)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.kotlinx.coroutines.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(project(":app"))
+    androidTestImplementation(project(":app"))
+    androidTestImplementation(project(":app"))
+    androidTestImplementation(project(":app"))
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
@@ -118,6 +125,7 @@ dependencies {
     //Retrofit
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.gson)
+
 
 
 }

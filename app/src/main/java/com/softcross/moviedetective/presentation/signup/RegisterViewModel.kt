@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.softcross.moviedetective.core.common.Resource
-import com.softcross.moviedetective.core.domain.model.UserModel
+import com.softcross.moviedetective.core.domain.model.User
 import com.softcross.moviedetective.core.domain.repository.FirebaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -43,5 +43,5 @@ class RegisterViewModel @Inject constructor(
 data class RegisterUiState(
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
-    val data: UserModel? = null
+    val data: User? = null
 )

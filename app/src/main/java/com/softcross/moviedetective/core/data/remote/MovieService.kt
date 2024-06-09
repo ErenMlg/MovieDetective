@@ -17,7 +17,7 @@ interface MovieService {
     suspend fun getComingSoonMovies(): MoviesResponse
 
     @GET("discover/movie?api_key=${BuildConfig.API_KEY}&with_genres={genres}")
-    suspend fun getMovieByGenre(@Path("genres") genres: String): MoviesResponse
+    suspend fun getMovieByGenre(@Path("genres") genreID: String): MoviesResponse
 
     @GET("movie/{movieID}?api_key=${BuildConfig.API_KEY}")
     suspend fun getSingleMovie(@Path("movieID") movieID: Int) : MovieDetailDto

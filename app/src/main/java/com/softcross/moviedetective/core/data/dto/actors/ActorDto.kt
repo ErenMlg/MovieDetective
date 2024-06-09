@@ -2,7 +2,7 @@ package com.softcross.moviedetective.core.data.dto.actors
 
 import com.google.gson.annotations.SerializedName
 
-data class Actor(
+data class ActorDto(
     @SerializedName("id")
     val id: Int,
     @SerializedName("name")
