@@ -21,3 +21,10 @@ fun String.convertToFormattedDate(): String {
     val date = LocalDate.parse(this, inputFormatter)
     return date.format(outputFormatter)
 }
+
+fun String.convertToFormattedYear(): String {
+    val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    val outputFormatter = DateTimeFormatter.ofPattern("yyyy", Locale.ENGLISH)
+    val date = LocalDate.parse(this, inputFormatter)
+    return date.format(outputFormatter)
+}

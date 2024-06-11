@@ -30,7 +30,7 @@ import com.softcross.moviedetective.R
 fun CustomAsyncImage(
     model: String,
     contentDescription: String,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     alignment: Alignment,
     contentScale: ContentScale
 ) {

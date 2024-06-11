@@ -51,7 +51,7 @@ class RemoteDataSourceImpl @Inject constructor(
         return flow {
             emit(NetworkResponseState.Loading)
             try {
-                val response = movieService.getComingSoonMovies()
+                val response = movieService.getMovieByGenre(genres)
                 emit(NetworkResponseState.Success(response))
             } catch (e: Exception) {
                 emit(NetworkResponseState.Error(e))

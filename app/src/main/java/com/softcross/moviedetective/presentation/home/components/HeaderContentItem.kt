@@ -1,11 +1,13 @@
 package com.softcross.moviedetective.presentation.home.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,11 +28,14 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.softcross.moviedetective.R
 import com.softcross.moviedetective.core.common.components.CustomAsyncImage
+import com.softcross.moviedetective.core.common.components.CustomText
 import com.softcross.moviedetective.core.common.extensions.convertToFormattedDate
+import com.softcross.moviedetective.core.common.extensions.shimmerBackground
 import com.softcross.moviedetective.core.domain.model.Movie
 
 @Composable
@@ -56,17 +61,14 @@ fun HeaderContentItem(movie: Movie, modifier: Modifier) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
+                CustomText(
                     text = movie.movieName,
+                    fontFamilyID = R.font.poppins_semi_bold,
                     fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_semi_bold)),
-                    textAlign = TextAlign.Start,
-                    maxLines = 1,
-                    color = Color.Black,
-                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 16.dp, start = 16.dp, top = 8.dp)
+                        .fillMaxWidth()
+                        .weight(1.5f)
+                        .padding(end = 4.dp, start = 16.dp, top = 8.dp)
                 )
                 Image(
                     painter = painterResource(id = R.drawable.icon_star),
@@ -75,47 +77,37 @@ fun HeaderContentItem(movie: Movie, modifier: Modifier) {
                     modifier = Modifier
                         .size(24.dp)
                         .align(alignment = Alignment.CenterVertically)
-                        .padding(end = 8.dp, top = 8.dp)
+                        .padding(top = 8.dp)
                 )
-                Text(
-                    text = movie.imdb.toString(),
-                    fontSize = 12.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_semi_bold)),
+                CustomText(
+                    text = "%.2f".format(movie.imdb),
+                    fontFamilyID = R.font.poppins_semi_bold,
                     textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    color = Color.Black,
                     modifier = Modifier
-                        .weight(0.15f)
+                        .weight(0.4f)
                         .padding(end = 8.dp, top = 8.dp)
                 )
             }
             LazyRow(
-                modifier = Modifier.padding(start = 16.dp)
+                modifier = Modifier.padding(horizontal = 16.dp)
             ) {
                 items(movie.genres) {
                     GenreItem(it)
                 }
             }
-            Text(
+            CustomText(
                 text = movie.description,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+                fontFamilyID = R.font.poppins_medium,
                 fontSize = 10.sp,
-                color = Color.Black,
-                fontFamily = FontFamily(Font(R.font.poppins_medium)),
+                color = Color.DarkGray,
                 modifier = Modifier.padding(end = 8.dp, start = 16.dp)
             )
-            Text(
+            CustomText(
                 text = movie.releaseDate.convertToFormattedDate(),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.secondary,
-                fontFamily = FontFamily(Font(R.font.poppins_regular)),
                 modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
             )
         }
-
         CustomAsyncImage(
             model = movie.movieImage,
             contentDescription = "",
@@ -127,6 +119,25 @@ fun HeaderContentItem(movie: Movie, modifier: Modifier) {
                 .padding(16.dp)
                 .shadow(elevation = 8.dp, MaterialTheme.shapes.small)
                 .clip(MaterialTheme.shapes.small)
+        )
+    }
+}
+
+@Preview(name = "Light", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Composable
+private fun HeaderContentPreview() {
+    MaterialTheme {
+        HeaderContentItem(
+            Movie(
+                movieID = 8778,
+                movieName = "Adrian ParkerAdrian ParkerAdrian Parker",
+                description = "urna",
+                genres = listOf(),
+                imdb = 8.4f,
+                releaseDate = "2024-12-12",
+                movieImage = "utroque"
+            ),
+            Modifier
         )
     }
 }

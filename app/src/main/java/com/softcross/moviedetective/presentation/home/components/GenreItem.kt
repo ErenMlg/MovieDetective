@@ -9,13 +9,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.softcross.moviedetective.R
+import com.softcross.moviedetective.core.common.components.CustomText
 
 @Composable
 fun GenreItem(genreID: Int, modifier: Modifier = Modifier) {
@@ -31,16 +34,17 @@ fun GenreItem(genreID: Int, modifier: Modifier = Modifier) {
                     listOf(
                         MaterialTheme.colorScheme.secondary,
                         Color.White
-                    )
+                    ),
+                    tileMode = TileMode.Repeated
                 )
             )
         ) {
-            Text(
-                text = "genre.genreName",
-                fontSize = 8.sp,
-                fontFamily = FontFamily(Font(R.font.poppins_semi_bold)),
+            CustomText(
+                text = "Action",
+                modifier = Modifier.padding(horizontal = 8.dp),
                 color = Color.White,
-                modifier = Modifier.padding(horizontal = 8.dp)
+                fontFamilyID = R.font.poppins_semi_bold,
+                fontSize = 8.sp
             )
         }
     }

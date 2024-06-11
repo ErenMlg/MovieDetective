@@ -45,11 +45,11 @@ class HomeViewModel @Inject constructor(
     val discoverMovieState: State<ScreenState<List<Movie>>> get() = _discoverMovieState
 
     init {
-
         getTrendMovies()
         getTopMovies()
         discoverMovie(listOf(28, 12))
-
+        getComingMovies()
+        getPopularPeoples()
     }
 
     private fun getTopMovies() {
@@ -95,7 +95,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun discoverMovie(genreIDs: List<Int>) {
-        val convertedList = genreIDs.toString().replace("[", "").replace("]", "")
+        val convertedList = genreIDs.toString().replace("[", "").replace("]", "").replace(" ","")
         viewModelScope.launch {
             contentRepository.getMovieByGenre(convertedList).collect { result ->
                 when (result) {
