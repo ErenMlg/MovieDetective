@@ -95,7 +95,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun discoverMovie(genreIDs: List<Int>) {
-        val convertedList = genreIDs.toString().replace("[", "").replace("]", "").replace(" ","")
+        val convertedList = genreIDs.toString().replace("[", "").replace("]", "").replace(" ", "")
         viewModelScope.launch {
             contentRepository.getMovieByGenre(convertedList).collect { result ->
                 when (result) {
@@ -138,5 +138,23 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getPopularPeoples() {
+        viewModelScope.launch {
+            contentRepository.getPopularActors().collect { result ->
+                when (result) {
+                    is NetworkResponseState.Error -> {
+                        _popularPeopleState.value =
+                            ScreenState.Error(result.exception.message.toString())
+                    }
+
+                    is NetworkResponseState.Success -> {
+                        _popularPeopleState.value = ScreenState.Success(result.result)
+                    }
+
+                    is NetworkResponseState.Loading -> {
+                        _popularPeopleState.value = ScreenState.Loading
+                    }
+                }
+            }
+        }
     }
 }

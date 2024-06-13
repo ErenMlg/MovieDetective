@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -56,15 +57,12 @@ import com.softcross.moviedetective.presentation.theme.MovieDetectiveTheme
 
 @Composable
 fun RegisterScreen(
+    modifier: Modifier = Modifier,
     viewModel: RegisterViewModel = hiltViewModel()
 ) {
-
-    val imeState = rememberImeState()
     val keyboardHeight = WindowInsets.ime.getBottom(LocalDensity.current)
     val uiState = viewModel.registerUiState.value
     val scrollState = rememberScrollState()
-    val coroutineScope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
 
 
     var email by remember { mutableStateOf("") }
@@ -76,9 +74,7 @@ fun RegisterScreen(
         scrollState.scrollBy(keyboardHeight.toFloat())
     }
 
-
-
-    Box() {
+    Box(modifier.imePadding()) {
         Column(
             Modifier
                 .fillMaxSize()
@@ -162,7 +158,6 @@ fun RegisterScreen(
         }
         uiState.errorMessage?.let {
             CustomSnackbar(
-                snackbarHostState = snackbarHostState,
                 errorMessage = it,
                 modifier = Modifier
                     .align(alignment = Alignment.BottomCenter)

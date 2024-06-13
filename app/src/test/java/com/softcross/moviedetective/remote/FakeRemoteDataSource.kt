@@ -2,6 +2,8 @@ package com.softcross.moviedetective.remote
 
 import com.softcross.moviedetective.core.common.NetworkResponseState
 import com.softcross.moviedetective.core.data.dto.MovieDetailDto
+import com.softcross.moviedetective.core.data.dto.actors.ActorResponse
+import com.softcross.moviedetective.core.data.dto.genre.GenreResponse
 import com.softcross.moviedetective.core.data.dto.movies.MoviesResponse
 import com.softcross.moviedetective.core.data.source.remote.RemoteDataSource
 import com.softcross.moviedetective.moviesResult
@@ -87,5 +89,13 @@ class FakeRemoteDataSource : RemoteDataSource {
                 )
             }
         }
+    }
+
+    override fun getMovieGenres(): Flow<NetworkResponseState<GenreResponse>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getPopularActors(): Flow<NetworkResponseState<ActorResponse>> {
+        TODO("Not yet implemented")
     }
 }

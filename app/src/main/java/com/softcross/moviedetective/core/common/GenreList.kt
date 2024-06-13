@@ -3,17 +3,7 @@ package com.softcross.moviedetective.core.common
 import com.softcross.moviedetective.core.domain.model.Genre
 
 object GenreList {
-    private var movieGenreList: List<Genre> = mutableListOf(
-        Genre(genreID = 4695, genreName = "Amos"),
-        Genre(genreID = 4635, genreName = "Ayala"),
-        Genre(genreID = 4625, genreName = "Amos "),
-        Genre(genreID = 4615, genreName = "Ayala"),
-        Genre(genreID = 46151, genreName = "Ayala"),
-        Genre(genreID = 46135, genreName = "Ayala"),
-        Genre(genreID = 46145, genreName = "Ayala"),
-        Genre(genreID = 46515, genreName = "Ayala"),
-        Genre(genreID = 46165, genreName = "Ayala"),
-    )
+    private var movieGenreList: List<Genre> = mutableListOf()
     private var seriesGenreList: List<Genre> = mutableListOf()
 
     fun setMovieGenreList(list: List<Genre>) {
@@ -22,8 +12,8 @@ object GenreList {
 
     fun getMovieGenreList(): List<Genre> = movieGenreList
 
-    fun findMovieGenreWithID(genreID: Int) {
-        movieGenreList.find { it.genreID == genreID }
+    fun findMovieGenreWithID(genreID: Int) : Genre{
+       return movieGenreList.find { it.genreID == genreID } ?: Genre(0,"")
     }
 
     fun setSeriesGenreList(list: List<Genre>) {

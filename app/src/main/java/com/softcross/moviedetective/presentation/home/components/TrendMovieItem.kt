@@ -63,7 +63,7 @@ fun TrendMovieItem(movie: Movie) {
             textAlign = TextAlign.Start,
             fontSize = 14.sp,
             modifier = Modifier
-                .padding(top = 8.dp, start = 16.dp).fillMaxWidth()
+                .padding(top = 8.dp, start = 8.dp, end = 8.dp).fillMaxWidth()
         )
         Spacer(modifier = Modifier.size(16.dp))
         Row(
@@ -79,14 +79,14 @@ fun TrendMovieItem(movie: Movie) {
                 modifier = Modifier
                     .size(24.dp)
                     .weight(0.2f)
-                    .padding(start = 16.dp)
+                    .padding(start = 8.dp)
             )
             CustomText(
                 text = "%.2f".format(movie.imdb),
                 fontFamilyID = R.font.poppins_semi_bold,
                 modifier = Modifier
                     .weight(0.3f)
-                    .padding(start = 4.dp)
+                    .padding(start = 2.dp)
             )
             CustomText(
                 text = movie.releaseDate.convertToFormattedYear(),
@@ -94,7 +94,7 @@ fun TrendMovieItem(movie: Movie) {
                 color = Color.Gray,
                 modifier = Modifier
                     .weight(0.6f)
-                    .padding(end = 16.dp)
+                    .padding(end = 8.dp)
             )
         }
     }

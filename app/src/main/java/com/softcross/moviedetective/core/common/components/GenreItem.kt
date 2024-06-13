@@ -1,4 +1,4 @@
-package com.softcross.moviedetective.presentation.home.components
+package com.softcross.moviedetective.core.common.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -6,22 +6,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.softcross.moviedetective.R
-import com.softcross.moviedetective.core.common.components.CustomText
+import com.softcross.moviedetective.core.common.GenreList
 
 @Composable
 fun GenreItem(genreID: Int, modifier: Modifier = Modifier) {
+    val genre = GenreList.findMovieGenreWithID(genreID)
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent
@@ -40,7 +37,7 @@ fun GenreItem(genreID: Int, modifier: Modifier = Modifier) {
             )
         ) {
             CustomText(
-                text = "Action",
+                text = if (genre.genreName.isNotEmpty()) genre.genreName else "Error",
                 modifier = Modifier.padding(horizontal = 8.dp),
                 color = Color.White,
                 fontFamilyID = R.font.poppins_semi_bold,

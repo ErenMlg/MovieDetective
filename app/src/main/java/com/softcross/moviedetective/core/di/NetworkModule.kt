@@ -1,6 +1,7 @@
 package com.softcross.moviedetective.core.di
 
 import com.softcross.moviedetective.BuildConfig
+import com.softcross.moviedetective.core.data.remote.ActorService
 import com.softcross.moviedetective.core.data.remote.MovieService
 import dagger.Module
 import dagger.Provides
@@ -29,6 +30,12 @@ object NetworkModule {
     @ViewModelScoped
     fun provideMovieService(retrofit: Retrofit): MovieService {
         return retrofit.create(MovieService::class.java)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideActorService(retrofit: Retrofit): ActorService {
+        return retrofit.create(ActorService::class.java)
     }
 
 }

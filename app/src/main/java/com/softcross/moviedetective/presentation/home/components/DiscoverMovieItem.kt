@@ -1,8 +1,6 @@
 package com.softcross.moviedetective.presentation.home.components
 
 import android.content.res.Configuration
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,12 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,22 +22,16 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.softcross.moviedetective.R
-import com.softcross.moviedetective.core.common.GenreList
 import com.softcross.moviedetective.core.common.components.CustomAsyncImage
 import com.softcross.moviedetective.core.common.components.CustomText
-import com.softcross.moviedetective.core.common.extensions.bouncingClickable
+import com.softcross.moviedetective.core.common.components.GenreItem
 import com.softcross.moviedetective.core.common.extensions.convertToFormattedYear
-import com.softcross.moviedetective.core.domain.model.Genre
 import com.softcross.moviedetective.core.domain.model.Movie
-import com.softcross.moviedetective.presentation.home.HomeScreen
 
 
 @Composable
@@ -56,7 +43,6 @@ fun DiscoverMovieItem(movie: Movie) {
             .clip(MaterialTheme.shapes.small)
             .width(160.dp)
             .background(MaterialTheme.colorScheme.surfaceVariant)
-            .bouncingClickable(onClick = {})
     ) {
         CustomAsyncImage(
             model = movie.movieImage,
@@ -74,7 +60,7 @@ fun DiscoverMovieItem(movie: Movie) {
             textAlign = TextAlign.Center,
             fontFamilyID = R.font.poppins_medium,
             fontSize = 14.sp,
-            modifier = Modifier.padding(top = 8.dp, start = 16.dp)
+            modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)
         )
         LazyRow(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
             items(
@@ -96,7 +82,7 @@ fun DiscoverMovieItem(movie: Movie) {
                 modifier = Modifier
                     .size(24.dp)
                     .weight(0.2f)
-                    .padding(start = 16.dp)
+                    .padding(start = 8.dp)
             )
             CustomText(
                 text = "%.2f".format(movie.imdb),
@@ -111,7 +97,7 @@ fun DiscoverMovieItem(movie: Movie) {
                 color = Color.Gray,
                 modifier = Modifier
                     .weight(0.6f)
-                    .padding(end = 16.dp)
+                    .padding(end = 8.dp)
             )
         }
     }

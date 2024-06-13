@@ -5,6 +5,8 @@ import com.softcross.moviedetective.core.common.extensions.mapResponse
 import com.softcross.moviedetective.core.data.dto.MovieDetailDto
 import com.softcross.moviedetective.core.data.dto.movies.MovieDto
 import com.softcross.moviedetective.core.data.mapper.MovieResponseListMapper
+import com.softcross.moviedetective.core.domain.model.Actor
+import com.softcross.moviedetective.core.domain.model.Genre
 import com.softcross.moviedetective.core.domain.model.Movie
 import com.softcross.moviedetective.core.domain.repository.ContentRepository
 import com.softcross.moviedetective.singleMovie
@@ -75,4 +77,12 @@ class FakeContentRepository : ContentRepository {
                 )
             }
         }
+
+    override fun getMovieGenres(): Flow<NetworkResponseState<List<Genre>>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getPopularActors(): Flow<NetworkResponseState<List<Actor>>> {
+        TODO("Not yet implemented")
+    }
 }

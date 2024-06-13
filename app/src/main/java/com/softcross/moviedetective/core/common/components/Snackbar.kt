@@ -29,11 +29,10 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun CustomSnackbar(
-    snackbarHostState: SnackbarHostState,
     errorMessage: String,
     modifier: Modifier
 ) {
-
+    val snackbarHostState = remember { SnackbarHostState() }
     LaunchedEffect(key1 = errorMessage) {
         snackbarHostState.showSnackbar(errorMessage)
     }
@@ -63,7 +62,6 @@ fun CustomSnackbar(
 fun SnackbarPreview() {
     MaterialTheme {
         CustomSnackbar(
-            snackbarHostState = remember { SnackbarHostState() },
             errorMessage = "Sel",
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.error)

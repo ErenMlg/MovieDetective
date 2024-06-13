@@ -1,16 +1,22 @@
 package com.softcross.moviedetective.core.common.components
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
@@ -24,27 +30,26 @@ import com.softcross.moviedetective.R
 
 @Composable
 fun ErrorScreen(message: String) {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.error))
-    Column(modifier = Modifier.wrapContentSize(align = Alignment.Center)) {
-        LottieAnimation(
-            composition = composition,
-            iterations = LottieConstants.IterateForever,
-            speed = 0.8f,
+    Column(
+        Modifier.height(200.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.icon_error),
+            contentDescription = "",
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
             modifier = Modifier
-                .align(alignment = Alignment.CenterHorizontally)
-                .fillMaxWidth()
-                .height(200.dp)
-                .padding(16.dp)
+                .size(64.dp)
+                .padding(bottom = 8.dp)
         )
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+        CustomText(
             text = message,
-            textAlign = TextAlign.Center,
-            fontSize = 18.sp,
-            fontFamily = FontFamily(Font(R.font.poppins_regular)),
-            color = Color.Black
+            fontFamilyID = R.font.poppins_regular,
+            fontSize = 16.sp,
+            color = MaterialTheme.colorScheme.primary,
+            line = 2,
+            modifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp)
         )
     }
 }

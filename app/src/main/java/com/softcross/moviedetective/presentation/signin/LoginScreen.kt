@@ -75,12 +75,12 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
+    modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val uiState = viewModel.loginUiState.value
     val scrollState = rememberScrollState()
     val keyboardHeight = WindowInsets.ime.getBottom(LocalDensity.current)
-    val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(key1 = keyboardHeight) {
         scrollState.scrollBy(keyboardHeight.toFloat())
@@ -91,7 +91,7 @@ fun LoginScreen(
 
 
     Box(
-        Modifier.imePadding()
+        modifier.imePadding()
     ) {
         Column(
             Modifier
@@ -165,7 +165,6 @@ fun LoginScreen(
         }
         uiState.errorMessage?.let {
             CustomSnackbar(
-                snackbarHostState = snackbarHostState,
                 errorMessage = it,
                 modifier = Modifier
                     .align(alignment = Alignment.BottomCenter)
