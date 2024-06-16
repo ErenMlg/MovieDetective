@@ -8,7 +8,7 @@ import com.softcross.moviedetective.SINGLE_MOVIE_FILE_NAME
 import com.softcross.moviedetective.SINGLE_MOVIE_ID
 import com.softcross.moviedetective.TOP_20_MOVIE_FILE_NAME
 import com.softcross.moviedetective.TREND_MOVIE_FILE_NAME
-import com.softcross.moviedetective.core.data.remote.MovieService
+import com.softcross.moviedetective.data.remote.MovieService
 import com.softcross.moviedetective.firstItemComingMovies
 import com.softcross.moviedetective.firstItemTopMovies
 import com.softcross.moviedetective.firstItemTrendMovies

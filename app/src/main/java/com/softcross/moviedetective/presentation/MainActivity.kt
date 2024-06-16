@@ -29,12 +29,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsAnimationCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.softcross.moviedetective.R
+import com.softcross.moviedetective.common.CurrentUser
+import com.softcross.moviedetective.navigation.MovieNavHost
 import com.softcross.moviedetective.presentation.home.HomeScreen
 import com.softcross.moviedetective.presentation.signin.LoginScreen
 import com.softcross.moviedetective.presentation.signup.RegisterScreen
@@ -57,18 +62,14 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
                 ) { innerPadding ->
-                    HomeScreen(Modifier.padding(innerPadding).consumeWindowInsets(innerPadding))
+                    MovieNavHost(
+                        navHostController = rememberNavController(),
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .consumeWindowInsets(innerPadding)
+                    )
                 }
             }
         }
-    }
-}
-
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun GreetingPreview() {
-    MovieDetectiveTheme {
-        RegisterScreen()
     }
 }

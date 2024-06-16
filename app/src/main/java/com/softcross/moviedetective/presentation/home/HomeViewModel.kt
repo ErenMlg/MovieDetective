@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.softcross.moviedetective.core.common.NetworkResponseState
 import com.softcross.moviedetective.core.common.ScreenState
-import com.softcross.moviedetective.core.domain.model.Actor
-import com.softcross.moviedetective.core.domain.model.Movie
-import com.softcross.moviedetective.core.domain.repository.ContentRepository
+import com.softcross.moviedetective.domain.model.Actor
+import com.softcross.moviedetective.domain.model.Movie
+import com.softcross.moviedetective.domain.repository.ContentRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,6 +45,7 @@ class HomeViewModel @Inject constructor(
     val discoverMovieState: State<ScreenState<List<Movie>>> get() = _discoverMovieState
 
     init {
+        println("İnit HomeViewModel Run")
         getTrendMovies()
         getTopMovies()
         discoverMovie(listOf(28, 12))

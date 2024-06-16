@@ -1,20 +1,24 @@
 package com.softcross.moviedetective.navigation
 
+import androidx.navigation.NavType
 import androidx.navigation.navArgument
 
 interface Destination {
     val route: String
 }
 
-object LoginScreen : Destination {
+object Splash : Destination {
+    override val route: String = "splash"
+}
+
+object Login : Destination {
     override val route: String = "login"
 }
 
-object RegisterScreen : Destination {
+object Register : Destination {
     override val route: String = "register"
 }
 
-object HomeScreen : Destination{
+object Home : Destination {
     override val route: String = "home"
-    val routeWithArgs = "$route/$"
 }

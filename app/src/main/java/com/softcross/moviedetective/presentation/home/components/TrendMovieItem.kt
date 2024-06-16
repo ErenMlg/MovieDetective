@@ -32,7 +32,7 @@ import com.softcross.moviedetective.core.common.components.CustomAsyncImage
 import com.softcross.moviedetective.core.common.components.CustomText
 import com.softcross.moviedetective.core.common.extensions.bouncingClickable
 import com.softcross.moviedetective.core.common.extensions.convertToFormattedYear
-import com.softcross.moviedetective.core.domain.model.Movie
+import com.softcross.moviedetective.domain.model.Movie
 
 
 @Composable

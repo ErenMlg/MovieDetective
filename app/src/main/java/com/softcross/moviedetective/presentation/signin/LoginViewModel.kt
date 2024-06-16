@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.softcross.moviedetective.core.common.Resource
-import com.softcross.moviedetective.core.domain.model.User
-import com.softcross.moviedetective.core.domain.repository.FirebaseRepository
+import com.softcross.moviedetective.domain.model.User
+import com.softcross.moviedetective.domain.repository.FirebaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,7 +32,7 @@ class LoginViewModel @Inject constructor(
                 }
 
                 is Resource.Success -> {
-                    _loginUiState.value = LoginUiState(data = result.data)
+                    _loginUiState.value = LoginUiState(user = result.data, isLoading = true)
                 }
             }
         }
@@ -43,5 +43,5 @@ class LoginViewModel @Inject constructor(
 data class LoginUiState(
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
-    val data: User? = null
+    val user: User? = null
 )

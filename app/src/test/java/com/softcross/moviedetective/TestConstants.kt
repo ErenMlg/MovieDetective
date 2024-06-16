@@ -1,11 +1,11 @@
 package com.softcross.moviedetective
 
 import androidx.annotation.VisibleForTesting
-import com.softcross.moviedetective.core.data.dto.MovieDetailDto
-import com.softcross.moviedetective.core.data.dto.genre.GenreDto
-import com.softcross.moviedetective.core.data.dto.movies.MovieDto
-import com.softcross.moviedetective.core.data.dto.movies.MoviesResponse
-import com.softcross.moviedetective.core.domain.model.Movie
+import com.softcross.moviedetective.data.dto.MovieDetailDto
+import com.softcross.moviedetective.data.dto.genre.GenreDto
+import com.softcross.moviedetective.data.dto.movies.MovieDto
+import com.softcross.moviedetective.data.dto.movies.MoviesResponse
+import com.softcross.moviedetective.domain.model.Movie
 
 /**
  * FOR API TESTING

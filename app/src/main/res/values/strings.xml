@@ -24,4 +24,5 @@
     <string name="hide_password">Hide password</string>
     <string name="correct">Correct</string>
     <string name="wrong">Wrong</string>
+    <string name="something_was_wrong_on_register">Oops, Something went wrong on during %s!</string>
 </resources>

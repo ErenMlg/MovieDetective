@@ -32,7 +32,7 @@ import com.softcross.moviedetective.core.common.components.CustomAsyncImage
 import com.softcross.moviedetective.core.common.components.CustomText
 import com.softcross.moviedetective.core.common.components.GenreItem
 import com.softcross.moviedetective.core.common.extensions.convertToFormattedDate
-import com.softcross.moviedetective.core.domain.model.Movie
+import com.softcross.moviedetective.domain.model.Movie
 
 @Composable
 fun HeaderContentItem(movie: Movie, modifier: Modifier) {

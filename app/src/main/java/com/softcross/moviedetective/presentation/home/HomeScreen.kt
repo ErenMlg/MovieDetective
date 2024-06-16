@@ -7,7 +7,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,14 +35,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.softcross.moviedetective.R
+import com.softcross.moviedetective.common.CurrentUser
 import com.softcross.moviedetective.core.common.GenreList
 import com.softcross.moviedetective.core.common.ScreenState
-import com.softcross.moviedetective.core.common.components.CustomSnackbar
 import com.softcross.moviedetective.core.common.components.CustomText
 import com.softcross.moviedetective.core.common.components.ErrorScreen
 import com.softcross.moviedetective.core.common.extensions.startOffsetForPage
-import com.softcross.moviedetective.core.domain.model.Actor
-import com.softcross.moviedetective.core.domain.model.Movie
+import com.softcross.moviedetective.domain.model.Actor
+import com.softcross.moviedetective.domain.model.Movie
 import com.softcross.moviedetective.presentation.home.components.ComingMovieItem
 import com.softcross.moviedetective.presentation.home.components.DiscoverMovieItem
 import com.softcross.moviedetective.presentation.home.components.HeaderContentItem
@@ -54,16 +53,26 @@ import com.softcross.moviedetective.presentation.home.components.TrendMovieItem
 import kotlinx.coroutines.delay
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    val viewModel = hiltViewModel<HomeViewModel>()
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = hiltViewModel()
+) {
     val scrollState = rememberScrollState()
-
     Column(
         modifier
             .fillMaxSize()
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        CustomText(
+            text = "Welcome ${CurrentUser.getCurrentUserName()}",
+            fontFamilyID = R.font.poppins_semi_bold,
+            fontSize = 24.sp,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, bottom = 16.dp, top = 16.dp)
+        )
         HeaderContent(state = viewModel.topMovieState.value)
         CustomText(
             text = "Trending",
@@ -233,9 +242,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 @Composable
 fun HeaderContent(state: ScreenState<List<Movie>>) {
     when (state) {
-        is ScreenState.Loading -> {
-            LoadingHeaderContentItem()
-        }
+        is ScreenState.Loading -> LoadingHeaderContentItem()
 
         is ScreenState.Success -> {
             val pagerState = rememberPagerState { state.uiData.size }
@@ -272,18 +279,16 @@ fun HeaderContent(state: ScreenState<List<Movie>>) {
             }
         }
 
-        is ScreenState.Error -> {
-            ErrorScreen(message = state.message)
-        }
+        is ScreenState.Error -> ErrorScreen(message = state.message)
+
     }
 }
 
 @Composable
 fun TrendMoviesContent(state: ScreenState<List<Movie>>) {
     when (state) {
-        is ScreenState.Error -> {
-            ErrorScreen(message = state.message)
-        }
+        is ScreenState.Error -> ErrorScreen(message = state.message)
+
 
         is ScreenState.Loading -> {
             LazyRow(
@@ -304,15 +309,15 @@ fun TrendMoviesContent(state: ScreenState<List<Movie>>) {
                 }
             }
         }
+
     }
 }
 
 @Composable
 fun DiscoverMovieContent(state: ScreenState<List<Movie>>) {
     when (state) {
-        is ScreenState.Error -> {
-            ErrorScreen(message = state.message)
-        }
+        is ScreenState.Error -> ErrorScreen(message = state.message)
+
 
         is ScreenState.Loading -> {
             Column {
@@ -389,17 +394,16 @@ fun DiscoverMovieContent(state: ScreenState<List<Movie>>) {
                 }
             }
         }
+
     }
 }
 
 @Composable
 fun ComingSoonMovieContent(state: ScreenState<List<Movie>>) {
     when (state) {
-        is ScreenState.Error -> {
-            ErrorScreen(message = state.message)
-        }
+        is ScreenState.Error -> ErrorScreen(message = state.message)
 
-        ScreenState.Loading -> {
+        is ScreenState.Loading -> {
             LazyRow {
                 items(3) {
                     LoadingContentItems()
@@ -422,11 +426,9 @@ fun ComingSoonMovieContent(state: ScreenState<List<Movie>>) {
 @Composable
 fun PopularPeoplesContent(state: ScreenState<List<Actor>>) {
     when (state) {
-        is ScreenState.Error -> {
-            ErrorScreen(message = state.message)
-        }
+        is ScreenState.Error -> ErrorScreen(message = state.message)
 
-        ScreenState.Loading -> {
+        is ScreenState.Loading -> {
             LazyRow {
                 items(3) {
                     LoadingContentItems()

@@ -2,13 +2,13 @@ package com.softcross.moviedetective.repository
 
 import com.softcross.moviedetective.core.common.NetworkResponseState
 import com.softcross.moviedetective.core.common.extensions.mapResponse
-import com.softcross.moviedetective.core.data.dto.MovieDetailDto
-import com.softcross.moviedetective.core.data.dto.movies.MovieDto
-import com.softcross.moviedetective.core.data.mapper.MovieResponseListMapper
-import com.softcross.moviedetective.core.domain.model.Actor
-import com.softcross.moviedetective.core.domain.model.Genre
-import com.softcross.moviedetective.core.domain.model.Movie
-import com.softcross.moviedetective.core.domain.repository.ContentRepository
+import com.softcross.moviedetective.data.dto.MovieDetailDto
+import com.softcross.moviedetective.data.dto.movies.MovieDto
+import com.softcross.moviedetective.data.mapper.MovieResponseListMapper
+import com.softcross.moviedetective.domain.model.Actor
+import com.softcross.moviedetective.domain.model.Genre
+import com.softcross.moviedetective.domain.model.Movie
+import com.softcross.moviedetective.domain.repository.ContentRepository
 import com.softcross.moviedetective.singleMovie
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

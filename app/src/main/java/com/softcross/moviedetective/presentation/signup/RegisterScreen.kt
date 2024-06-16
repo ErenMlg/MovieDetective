@@ -1,9 +1,8 @@
 package com.softcross.moviedetective.presentation.signup
 
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -21,57 +20,54 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.softcross.moviedetective.R
+import com.softcross.moviedetective.common.CurrentUser
 import com.softcross.moviedetective.core.common.components.CustomPasswordTextField
 import com.softcross.moviedetective.core.common.components.CustomSnackbar
+import com.softcross.moviedetective.core.common.components.CustomText
 import com.softcross.moviedetective.core.common.components.CustomTextField
 import com.softcross.moviedetective.core.common.components.LoadingTextButton
 import com.softcross.moviedetective.core.common.extensions.emailRegex
 import com.softcross.moviedetective.core.common.extensions.nameSurnameRegex
 import com.softcross.moviedetective.core.common.extensions.passwordRegex
-import com.softcross.moviedetective.core.common.extensions.rememberImeState
-import com.softcross.moviedetective.presentation.theme.MovieDetectiveTheme
 
 
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    viewModel: RegisterViewModel = hiltViewModel()
+    viewModel: RegisterViewModel = hiltViewModel(),
+    onSuccess: () -> Unit,
+    onLogin: () -> Unit
 ) {
-    val keyboardHeight = WindowInsets.ime.getBottom(LocalDensity.current)
     val uiState = viewModel.registerUiState.value
-    val scrollState = rememberScrollState()
-
-
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     var surname by remember { mutableStateOf("") }
 
-    LaunchedEffect(key1 = keyboardHeight) {
-        scrollState.scrollBy(keyboardHeight.toFloat())
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val scrollState = rememberScrollState()
+
+    uiState.user?.let {
+        onSuccess()
+        CurrentUser.setCurrentUser(it)
     }
 
     Box(modifier.imePadding()) {
@@ -94,18 +90,20 @@ fun RegisterScreen(
                     contentDescription = "Logo",
                     modifier = Modifier.size(160.dp)
                 )
-                Text(
+                CustomText(
                     text = stringResource(id = R.string.app_name),
                     textAlign = TextAlign.Center,
                     fontSize = 18.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_semi_bold)),
+                    color = MaterialTheme.colorScheme.primary,
+                    fontFamilyID = R.font.poppins_semi_bold,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
-                Text(
+                CustomText(
                     text = stringResource(id = R.string.register_text),
                     textAlign = TextAlign.Center,
                     fontSize = 14.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                    line = 2,
+                    color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
@@ -142,17 +140,21 @@ fun RegisterScreen(
                 LoadingTextButton(
                     isLoading = uiState.isLoading,
                     isEnable = surname.nameSurnameRegex() && name.nameSurnameRegex() && password.passwordRegex() && email.emailRegex(),
-                    onClick = { viewModel.registerUser(email, password, name, surname) },
+                    onClick = {
+                        viewModel.registerUser(email, password, name, surname)
+                        keyboardController?.hide()
+                    },
                     buttonText = R.string.sing_up
                 )
-                Text(
+                CustomText(
                     text = stringResource(id = R.string.already_have_acc),
                     textAlign = TextAlign.End,
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                    color = MaterialTheme.colorScheme.primary,
                     fontSize = 14.sp,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp)
+                        .clickable(onClick = onLogin)
                 )
             }
         }
@@ -163,14 +165,5 @@ fun RegisterScreen(
                     .align(alignment = Alignment.BottomCenter)
             )
         }
-    }
-}
-
-@Preview(name = "Light", uiMode = UI_MODE_NIGHT_NO)
-@Preview(name = "Dark", uiMode = UI_MODE_NIGHT_YES)
-@Composable
-fun RegisterScreenPreview() {
-    MovieDetectiveTheme {
-        RegisterScreen()
     }
 }
