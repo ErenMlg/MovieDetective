@@ -35,10 +35,10 @@ import com.softcross.moviedetective.core.common.extensions.convertToFormattedDat
 import com.softcross.moviedetective.domain.model.Movie
 
 @Composable
-fun HeaderContentItem(movie: Movie, modifier: Modifier) {
+fun PopularContentItem(movie: Movie, modifier: Modifier) {
     Box(
         modifier = modifier
-            .padding(bottom = 32.dp)
+            .padding(bottom = 24.dp)
             .width(400.dp)
             .height(200.dp)
     ) {
@@ -123,7 +123,7 @@ fun HeaderContentItem(movie: Movie, modifier: Modifier) {
 @Composable
 private fun HeaderContentPreview() {
     MaterialTheme {
-        HeaderContentItem(
+        PopularContentItem(
             Movie(
                 movieID = 8778,
                 movieName = "Adrian ParkerAdrian ParkerAdrian Parker",

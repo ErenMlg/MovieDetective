@@ -44,7 +44,7 @@ internal class MovieServiceTest {
     fun response_whenTop20MovieSearched_isNotNull(){
         runBlocking {
             enqueueMockResponse(TOP_20_MOVIE_FILE_NAME)
-            val response = movieService.getTop20Movie()
+            val response = movieService.getTopMovies()
             mockWebServer.takeRequest()
             assertThat(response).isNotNull()
         }
@@ -54,7 +54,7 @@ internal class MovieServiceTest {
     fun requestPath_whenTop20MovieRequested_isSameWithRequest() {
         runBlocking {
             enqueueMockResponse(TOP_20_MOVIE_FILE_NAME)
-            movieService.getTop20Movie()
+            movieService.getTopMovies()
             val request = mockWebServer.takeRequest()
             assertThat(request.path).isEqualTo("/movie/top_rated?api_key=${BuildConfig.API_KEY}")
         }
@@ -64,7 +64,7 @@ internal class MovieServiceTest {
     fun firstElement_whenTop20MovieRequested_hasSame() {
         runBlocking {
             enqueueMockResponse(TOP_20_MOVIE_FILE_NAME)
-            val response = movieService.getTop20Movie()
+            val response = movieService.getTopMovies()
             val firstItem = response.data.first()
             assertThat(firstItem).isEqualTo(firstItemTopMovies)
         }

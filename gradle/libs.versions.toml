@@ -17,6 +17,7 @@ firebaseAuth = "23.0.0"
 ksp = "1.9.0-1.0.13"
 hilt = "2.49"
 androidxHiltNavigationCompose = "1.2.0"
+nav = "2.7.7"
 firebaseFirestore = "25.0.0"
 mockitoCore = "4.0.0"
 mockitoKotlin = "4.0.0"
@@ -43,6 +44,7 @@ kotlinCompilerExtensionVersion = "1.5.3"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
@@ -51,6 +53,7 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-monitor = { group = "androidx.test", name = "monitor", version.ref = "monitor" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-nav = { group = "androidx.navigation", name = "navigation-compose", version.ref = "nav" }
 #Test
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
@@ -75,7 +78,7 @@ hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 #Lottie
-com-airbnb-android-lottie = {group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieVersion" }
+com-airbnb-android-lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieVersion" }
 #Coil for image
 coil-kt-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 #Retrofit

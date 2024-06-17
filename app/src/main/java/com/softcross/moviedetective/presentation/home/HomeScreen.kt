@@ -6,6 +6,8 @@ import android.os.Build
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +26,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,21 +48,24 @@ import com.softcross.moviedetective.core.common.components.CustomText
 import com.softcross.moviedetective.core.common.components.ErrorScreen
 import com.softcross.moviedetective.core.common.extensions.startOffsetForPage
 import com.softcross.moviedetective.domain.model.Actor
+import com.softcross.moviedetective.domain.model.Genre
 import com.softcross.moviedetective.domain.model.Movie
 import com.softcross.moviedetective.presentation.home.components.ComingMovieItem
 import com.softcross.moviedetective.presentation.home.components.DiscoverMovieItem
-import com.softcross.moviedetective.presentation.home.components.HeaderContentItem
 import com.softcross.moviedetective.presentation.home.components.LoadingContentItems
 import com.softcross.moviedetective.presentation.home.components.LoadingHeaderContentItem
+import com.softcross.moviedetective.presentation.home.components.PopularContentItem
 import com.softcross.moviedetective.presentation.home.components.PopularPeopleItem
 import com.softcross.moviedetective.presentation.home.components.TrendMovieItem
 import kotlinx.coroutines.delay
+
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val selectedGenreList = remember { mutableStateOf(mutableListOf<Int>()) }
     val scrollState = rememberScrollState()
     Column(
         modifier
@@ -71,176 +80,52 @@ fun HomeScreen(
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, bottom = 16.dp, top = 16.dp)
+                .padding(start = 16.dp, top = 16.dp)
         )
-        HeaderContent(state = viewModel.topMovieState.value)
-        CustomText(
-            text = "Trending",
-            fontFamilyID = R.font.poppins_semi_bold,
-            fontSize = 24.sp,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp)
+        ContentTitleField(
+            title = "Popular",
+            subTitle = "Explore popular movies on all time"
         )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            CustomText(
-                text = "Explore trend movies",
-                line = 2,
-                color = Color.Gray,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp)
-                    .weight(0.6f)
-            )
-            CustomText(
-                text = "View More",
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .weight(0.2f)
-                    .padding(start = 16.dp)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.icon_left_arrow),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-                contentDescription = "",
-                modifier = Modifier
-                    .size(12.dp)
-                    .weight(0.1f)
-                    .padding(end = 8.dp)
-            )
-        }
+        PopularContent(viewModel.topMovieState.value)
+        ContentTitleField(
+            title = "Trend",
+            subTitle = "Explore trend movies on close time"
+        )
         TrendMoviesContent(viewModel.trendMovieState.value)
-        CustomText(
-            text = "Discover",
-            fontFamilyID = R.font.poppins_semi_bold,
-            fontSize = 24.sp,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp, start = 16.dp)
+        ContentTitleField(
+            title = "Discover",
+            subTitle = "Explore movies and with category"
         )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(bottom = 16.dp)
-        ) {
-            CustomText(
-                text = "Explore movies and with category",
-                line = 2,
-                color = Color.Gray,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp)
-                    .weight(0.6f)
-            )
-            CustomText(
-                text = "View More",
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .weight(0.2f)
-                    .padding(start = 16.dp)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.icon_left_arrow),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-                contentDescription = "",
-                modifier = Modifier
-                    .size(12.dp)
-                    .weight(0.1f)
-                    .padding(end = 8.dp)
-            )
-        }
+        GenreSelectionField(
+            onSelect = {
+                if (selectedGenreList.value.contains(it)) {
+                    selectedGenreList.value.remove(it)
+                } else {
+                    selectedGenreList.value.add(it)
+                }
+                viewModel.discoverMoviesByGenre(selectedGenreList.value)
+            },
+            selectedGenreList = selectedGenreList.value
+        )
         DiscoverMovieContent(viewModel.discoverMovieState.value)
-        CustomText(
-            text = "Coming Soon",
-            fontFamilyID = R.font.poppins_semi_bold,
-            fontSize = 24.sp,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp, start = 16.dp)
+
+
+        ContentTitleField(
+            title = "Coming Soon",
+            subTitle = "Explore coming movies on soon"
         )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            CustomText(
-                text = "Explore coming movies",
-                line = 2,
-                color = Color.Gray,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp)
-                    .weight(0.6f)
-            )
-            CustomText(
-                text = "View More",
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .weight(0.2f)
-                    .padding(start = 16.dp)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.icon_left_arrow),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-                contentDescription = "",
-                modifier = Modifier
-                    .size(12.dp)
-                    .weight(0.1f)
-                    .padding(end = 8.dp)
-            )
-        }
         ComingSoonMovieContent(viewModel.upcomingMovieState.value)
-        CustomText(
-            text = "Popular People",
-            fontFamilyID = R.font.poppins_semi_bold,
-            fontSize = 24.sp,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp, start = 16.dp)
+        ContentTitleField(
+            title = "Popular People",
+            subTitle = "Explore popular actors on close time"
         )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            CustomText(
-                text = "Explore popular actors",
-                line = 2,
-                color = Color.Gray,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp)
-                    .weight(0.6f)
-            )
-            CustomText(
-                text = "View More",
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .weight(0.2f)
-                    .padding(start = 16.dp)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.icon_left_arrow),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-                contentDescription = "",
-                modifier = Modifier
-                    .size(12.dp)
-                    .weight(0.1f)
-                    .padding(end = 8.dp)
-            )
-        }
         PopularPeoplesContent(viewModel.popularPeopleState.value)
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HeaderContent(state: ScreenState<List<Movie>>) {
+fun PopularContent(state: ScreenState<List<Movie>>) {
     when (state) {
         is ScreenState.Loading -> LoadingHeaderContentItem()
 
@@ -257,7 +142,7 @@ fun HeaderContent(state: ScreenState<List<Movie>>) {
                 }
             }
             HorizontalPager(state = pagerState) { page ->
-                HeaderContentItem(
+                PopularContentItem(
                     movie = state.uiData[page],
                     modifier = Modifier.graphicsLayer {
                         val startOffset = pagerState.startOffsetForPage(page)
@@ -289,7 +174,6 @@ fun TrendMoviesContent(state: ScreenState<List<Movie>>) {
     when (state) {
         is ScreenState.Error -> ErrorScreen(message = state.message)
 
-
         is ScreenState.Loading -> {
             LazyRow(
                 modifier = Modifier.padding(vertical = 8.dp)
@@ -304,93 +188,73 @@ fun TrendMoviesContent(state: ScreenState<List<Movie>>) {
             LazyRow(
                 modifier = Modifier.padding(vertical = 8.dp)
             ) {
-                items(state.uiData) {
-                    TrendMovieItem(movie = it)
+                items(items = state.uiData, key = { it.movieID }) { movie ->
+                    TrendMovieItem(movie = movie)
                 }
             }
         }
-
     }
 }
 
 @Composable
-fun DiscoverMovieContent(state: ScreenState<List<Movie>>) {
+fun GenreSelectionField(
+    onSelect: (Int) -> Unit,
+    genreList: List<Genre> = GenreList.getMovieGenreList(),
+    selectedGenreList: List<Int>
+) {
+    LazyRow {
+        items(items = genreList, key = { it.genreID }) { genre ->
+            val isSelected = selectedGenreList.contains(genre.genreID)
+            Card(
+                modifier = Modifier
+                    .padding(horizontal = 4.dp)
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() },
+                    ) {
+                        onSelect(genre.genreID)
+                    },
+                elevation = CardDefaults.cardElevation(4.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = if (isSelected) MaterialTheme.colorScheme.secondary else Color.White
+                )
+            ) {
+                CustomText(
+                    text = genre.genreName,
+                    color = if (isSelected) Color.White else MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(horizontal = 8.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun DiscoverMovieContent(
+    state: ScreenState<List<Movie>>
+) {
+    println("Recreated Discover Movie Content")
     when (state) {
         is ScreenState.Error -> ErrorScreen(message = state.message)
 
-
         is ScreenState.Loading -> {
-            Column {
-                Row(
-                    modifier = Modifier.padding(bottom = 8.dp)
-                ) {
-                    LazyRow(
-                        modifier = Modifier.weight(0.8f)
-                    ) {
-                        items(GenreList.getMovieGenreList()) {
-                            Card(
-                                modifier = Modifier.padding(horizontal = 4.dp),
-                                elevation = CardDefaults.cardElevation(4.dp)
-                            ) {
-                                CustomText(
-                                    text = it.genreName,
-                                    modifier = Modifier.padding(horizontal = 8.dp)
-                                )
-                            }
-                        }
-                    }
-                    Image(
-                        painter = painterResource(id = R.drawable.icon_filter),
-                        contentDescription = "Filter",
-                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-                        modifier = Modifier.weight(0.1f)
-                    )
-                }
-                LazyRow(
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                ) {
-                    items(3) {
-                        LoadingContentItems()
-                    }
+            LazyRow(
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+            ) {
+                items(3) {
+                    LoadingContentItems()
                 }
             }
         }
 
         is ScreenState.Success -> {
-            Column {
-                Row(
-                    modifier = Modifier.padding(bottom = 8.dp)
-                ) {
-                    LazyRow(
-                        modifier = Modifier.weight(0.8f)
-                    ) {
-                        items(GenreList.getMovieGenreList()) {
-                            Card(
-                                modifier = Modifier.padding(horizontal = 4.dp),
-                                elevation = CardDefaults.cardElevation(4.dp)
-                            ) {
-                                CustomText(
-                                    text = it.genreName,
-                                    modifier = Modifier.padding(horizontal = 8.dp)
-                                )
-                            }
-                        }
-                    }
-                    Image(
-                        painter = painterResource(id = R.drawable.icon_filter),
-                        contentDescription = "Filter",
-                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-                        modifier = Modifier.weight(0.1f)
-                    )
-                }
-                LazyRow(
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                ) {
-                    items(state.uiData) { movie ->
-                        DiscoverMovieItem(movie = movie)
-                    }
+            LazyRow(
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+            ) {
+                items(items = state.uiData, key = { it.movieID }) { movie ->
+                    DiscoverMovieItem(movie = movie)
                 }
             }
         }
@@ -415,7 +279,7 @@ fun ComingSoonMovieContent(state: ScreenState<List<Movie>>) {
             LazyRow(
                 modifier = Modifier.padding(vertical = 8.dp)
             ) {
-                items(state.uiData) { movie ->
+                items(items = state.uiData, key = { it.movieID }) { movie ->
                     ComingMovieItem(movie = movie)
                 }
             }
@@ -440,10 +304,58 @@ fun PopularPeoplesContent(state: ScreenState<List<Actor>>) {
             LazyRow(
                 modifier = Modifier.padding(top = 8.dp, bottom = 24.dp)
             ) {
-                items(state.uiData) { actor ->
+                items(
+                    items = state.uiData,
+                    key = { actor ->
+                        actor.id
+                    }) { actor ->
                     PopularPeopleItem(actor)
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ContentTitleField(title: String, subTitle: String) {
+    println("Recreated Content Title Field")
+    CustomText(
+        text = title,
+        fontFamilyID = R.font.poppins_semi_bold,
+        fontSize = 24.sp,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp, start = 16.dp)
+    )
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        CustomText(
+            text = subTitle,
+            line = 2,
+            color = Color.Gray,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp)
+                .weight(0.6f)
+        )
+        CustomText(
+            text = "View More",
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier
+                .weight(0.2f)
+                .padding(start = 16.dp)
+        )
+        Image(
+            painter = painterResource(id = R.drawable.icon_left_arrow),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+            contentDescription = "",
+            modifier = Modifier
+                .size(12.dp)
+                .weight(0.1f)
+                .padding(end = 8.dp)
+        )
     }
 }

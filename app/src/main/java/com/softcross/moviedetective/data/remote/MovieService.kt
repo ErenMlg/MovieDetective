@@ -2,7 +2,6 @@ package com.softcross.moviedetective.data.remote
 
 import com.softcross.moviedetective.BuildConfig
 import com.softcross.moviedetective.data.dto.MovieDetailDto
-import com.softcross.moviedetective.data.dto.genre.GenreDto
 import com.softcross.moviedetective.data.dto.genre.GenreResponse
 import com.softcross.moviedetective.data.dto.movies.MoviesResponse
 import retrofit2.http.GET
@@ -11,7 +10,7 @@ import retrofit2.http.Query
 
 interface MovieService {
     @GET("movie/top_rated?api_key=${BuildConfig.API_KEY}")
-    suspend fun getTop20Movie(): MoviesResponse
+    suspend fun getTopMovies(@Query("page") page: Int = 1): MoviesResponse
 
     @GET("movie/popular?api_key=${BuildConfig.API_KEY}")
     suspend fun getTrendMovies(): MoviesResponse

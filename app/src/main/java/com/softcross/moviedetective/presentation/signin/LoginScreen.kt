@@ -58,6 +58,8 @@ fun LoginScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
+    var isLoading by remember { mutableStateOf(false) }
+
     LaunchedEffect(uiState.user) {
         uiState.user?.let {
             CurrentUser.setCurrentUser(it)
@@ -124,11 +126,12 @@ fun LoginScreen(
                     onValueChange = { password = it },
                 )
                 LoadingTextButton(
-                    isLoading = uiState.isLoading,
+                    isLoading = isLoading,
                     isEnable = email.emailRegex() && password.passwordRegex(),
                     onClick = {
                         viewModel.loginUser(email.trim(), password.trim())
                         keyboardController?.hide()
+                        isLoading = true
                     },
                     buttonText = R.string.sing_in
                 )

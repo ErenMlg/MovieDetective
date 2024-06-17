@@ -45,10 +45,9 @@ class HomeViewModel @Inject constructor(
     val discoverMovieState: State<ScreenState<List<Movie>>> get() = _discoverMovieState
 
     init {
-        println("İnit HomeViewModel Run")
         getTrendMovies()
         getTopMovies()
-        discoverMovie(listOf(28, 12))
+        discoverMovie("28, 12")
         getComingMovies()
         getPopularPeoples()
     }
@@ -95,8 +94,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun discoverMovie(genreIDs: List<Int>) {
+    fun discoverMoviesByGenre(genreIDs: List<Int>) {
         val convertedList = genreIDs.toString().replace("[", "").replace("]", "").replace(" ", "")
+        discoverMovie(convertedList)
+    }
+
+    private fun discoverMovie(convertedList: String) {
         viewModelScope.launch {
             contentRepository.getMovieByGenre(convertedList).collect { result ->
                 when (result) {
@@ -106,7 +109,11 @@ class HomeViewModel @Inject constructor(
                     }
 
                     is NetworkResponseState.Success -> {
-                        _discoverMovieState.value = ScreenState.Success(result.result)
+                        if (result.result.isEmpty()) {
+                            _discoverMovieState.value = ScreenState.Error("No Movie Found")
+                        } else {
+                            _discoverMovieState.value = ScreenState.Success(result.result)
+                        }
                     }
 
                     is NetworkResponseState.Loading -> {

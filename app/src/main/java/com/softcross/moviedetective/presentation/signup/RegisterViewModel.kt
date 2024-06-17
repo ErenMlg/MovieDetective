@@ -28,7 +28,8 @@ class RegisterViewModel @Inject constructor(
                     }
 
                     is Resource.Success -> {
-                        _registerUiState.value = RegisterUiState(user = result.data)
+                        _registerUiState.value =
+                            RegisterUiState(user = result.data, isLoading = true)
                     }
 
                     is Resource.Loading -> {

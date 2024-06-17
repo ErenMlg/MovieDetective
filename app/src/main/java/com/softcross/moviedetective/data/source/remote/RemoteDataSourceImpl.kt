@@ -3,12 +3,10 @@ package com.softcross.moviedetective.data.source.remote
 import com.softcross.moviedetective.core.common.NetworkResponseState
 import com.softcross.moviedetective.data.dto.MovieDetailDto
 import com.softcross.moviedetective.data.dto.actors.ActorResponse
-import com.softcross.moviedetective.data.dto.genre.GenreDto
 import com.softcross.moviedetective.data.dto.genre.GenreResponse
 import com.softcross.moviedetective.data.dto.movies.MoviesResponse
 import com.softcross.moviedetective.data.remote.ActorService
 import com.softcross.moviedetective.data.remote.MovieService
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -21,7 +19,7 @@ class RemoteDataSourceImpl @Inject constructor(
         return flow {
             emit(NetworkResponseState.Loading)
             try {
-                val response = movieService.getTop20Movie()
+                val response = movieService.getTopMovies()
                 emit(NetworkResponseState.Success(response))
             } catch (e: Exception) {
                 emit(NetworkResponseState.Error(e))

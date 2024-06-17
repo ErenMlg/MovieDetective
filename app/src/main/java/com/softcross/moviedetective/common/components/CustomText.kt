@@ -30,6 +30,6 @@ fun CustomText(
         maxLines = line,
         color = color,
         overflow = TextOverflow.Ellipsis,
-        modifier = modifier
+        modifier = modifier,
     )
 }
