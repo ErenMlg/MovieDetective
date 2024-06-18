@@ -11,7 +11,7 @@ val SubBlue = Color(0xFFEEF7FF)
 val Gray = Color(0xFFEEF7FF)
 
 val Red = Color(0xFFFF2C2C)
-val DarkRed = Color(0xFFAA0000)
+val DarkRed = Color(0xFFFF0303)
 
 val Black = Color(0xFF000000)
 val BlackGray = Color(0xFF292929)

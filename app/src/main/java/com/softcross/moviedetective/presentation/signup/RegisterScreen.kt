@@ -2,17 +2,12 @@ package com.softcross.moviedetective.presentation.signup
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollBy
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,14 +17,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.softcross.moviedetective.R
 import com.softcross.moviedetective.common.CurrentUser
+import com.softcross.moviedetective.common.extensions.clickableWithoutIndicator
 import com.softcross.moviedetective.core.common.components.CustomPasswordTextField
 import com.softcross.moviedetective.core.common.components.CustomSnackbar
 import com.softcross.moviedetective.core.common.components.CustomText
@@ -151,14 +145,10 @@ fun RegisterScreen(
                     text = stringResource(id = R.string.already_have_acc),
                     textAlign = TextAlign.End,
                     color = MaterialTheme.colorScheme.primary,
-                    fontSize = 14.sp,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp)
-                        .clickable(
-                            onClick = onLogin, indication = null,
-                            interactionSource = remember { MutableInteractionSource() },
-                        )
+                        .clickableWithoutIndicator { onLogin() }
                 )
             }
         }

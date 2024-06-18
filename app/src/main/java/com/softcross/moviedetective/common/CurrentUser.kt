@@ -18,5 +18,7 @@ object CurrentUser {
         currentUser = null
     }
 
+    fun getCurrentUserID(): String = currentUser?.id ?: ""
+
     fun getCurrentUserName(): String = "${currentUser?.name} ${currentUser?.surname?.first()}."
 }

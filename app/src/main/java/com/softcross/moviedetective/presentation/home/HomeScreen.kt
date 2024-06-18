@@ -1,13 +1,12 @@
 package com.softcross.moviedetective.presentation.home
 
+import android.content.Context
 import android.graphics.RenderEffect
 import android.graphics.Shader
 import android.os.Build
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,22 +25,21 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asComposeRenderEffect
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.softcross.moviedetective.R
 import com.softcross.moviedetective.common.CurrentUser
+import com.softcross.moviedetective.common.extensions.clickableWithoutIndicator
 import com.softcross.moviedetective.core.common.GenreList
 import com.softcross.moviedetective.core.common.ScreenState
 import com.softcross.moviedetective.core.common.components.CustomText
@@ -63,25 +61,48 @@ import kotlinx.coroutines.delay
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    onExit: () -> Unit
 ) {
-    val selectedGenreList = remember { mutableStateOf(mutableListOf<Int>()) }
+    val selectedGenreList = remember { mutableListOf<Int>() }
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
     Column(
         modifier
             .fillMaxSize()
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CustomText(
-            text = "Welcome ${CurrentUser.getCurrentUserName()}",
-            fontFamilyID = R.font.poppins_semi_bold,
-            fontSize = 24.sp,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, top = 16.dp)
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            CustomText(
+                text = "Welcome ${CurrentUser.getCurrentUserName()}",
+                fontFamilyID = R.font.poppins_semi_bold,
+                fontSize = 24.sp,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .padding(start = 16.dp, top = 16.dp)
+            )
+            Image(
+                painter = painterResource(id = R.drawable.icon_exit),
+                contentDescription = "",
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(end = 16.dp, top = 16.dp)
+                    .clickableWithoutIndicator {
+                        context
+                            .getSharedPreferences("logFile", Context.MODE_PRIVATE)
+                            .edit()
+                            .clear()
+                            .apply()
+                        onExit()
+                    }
+            )
+        }
         ContentTitleField(
             title = "Popular",
             subTitle = "Explore popular movies on all time"
@@ -98,14 +119,15 @@ fun HomeScreen(
         )
         GenreSelectionField(
             onSelect = {
-                if (selectedGenreList.value.contains(it)) {
-                    selectedGenreList.value.remove(it)
+                if (selectedGenreList.contains(it)) {
+                    selectedGenreList.remove(it)
                 } else {
-                    selectedGenreList.value.add(it)
+                    selectedGenreList.add(it)
                 }
-                viewModel.discoverMoviesByGenre(selectedGenreList.value)
+                if (selectedGenreList.isEmpty()) viewModel.discoverMoviesByGenre(listOf(12, 28))
+                else viewModel.discoverMoviesByGenre(selectedGenreList)
             },
-            selectedGenreList = selectedGenreList.value
+            selectedGenreList = selectedGenreList
         )
         DiscoverMovieContent(viewModel.discoverMovieState.value)
 
@@ -202,16 +224,15 @@ fun GenreSelectionField(
     genreList: List<Genre> = GenreList.getMovieGenreList(),
     selectedGenreList: List<Int>
 ) {
-    LazyRow {
+    LazyRow(
+        Modifier.padding(top = 8.dp)
+    ) {
         items(items = genreList, key = { it.genreID }) { genre ->
             val isSelected = selectedGenreList.contains(genre.genreID)
             Card(
                 modifier = Modifier
                     .padding(horizontal = 4.dp)
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() },
-                    ) {
+                    .clickableWithoutIndicator {
                         onSelect(genre.genreID)
                     },
                 elevation = CardDefaults.cardElevation(4.dp),
@@ -221,7 +242,7 @@ fun GenreSelectionField(
             ) {
                 CustomText(
                     text = genre.genreName,
-                    color = if (isSelected) Color.White else MaterialTheme.colorScheme.primary,
+                    color = if (isSelected) Color.White else Color.DarkGray,
                     modifier = Modifier.padding(horizontal = 8.dp)
                 )
             }

@@ -28,6 +28,13 @@ fun MovieNavHost(
                             inclusive = true
                         }
                     }
+                },
+                onLogged = {
+                    navHostController.navigate(Home.route){
+                        popUpTo(Splash.route){
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -61,7 +68,15 @@ fun MovieNavHost(
             )
         }
         composable(route = Home.route) {
-            HomeScreen()
+            HomeScreen(
+                onExit = {
+                    navHostController.navigate(Login.route){
+                        popUpTo(Home.route){
+                            inclusive = true
+                        }
+                    }
+                }
+            )
         }
     }
 }

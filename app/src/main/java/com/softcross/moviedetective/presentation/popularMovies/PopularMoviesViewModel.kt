@@ -26,7 +26,9 @@ class PopularMoviesViewModel @Inject constructor(
             when (response) {
                 is NetworkResponseState.Error -> _state.value =
                     ScreenState.Error(response.exception.message.toString())
+
                 is NetworkResponseState.Loading -> _state.value = ScreenState.Loading
+
                 is NetworkResponseState.Success -> {
                     movieList.addAll(response.result)
                     _state.value = ScreenState.Success(movieList)
