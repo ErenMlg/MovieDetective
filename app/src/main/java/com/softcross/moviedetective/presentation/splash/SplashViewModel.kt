@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.softcross.moviedetective.common.CurrentUser
-import com.softcross.moviedetective.core.common.GenreList
+import com.softcross.moviedetective.common.GenreList
 import com.softcross.moviedetective.core.common.NetworkResponseState
 import com.softcross.moviedetective.core.common.ScreenState
 import com.softcross.moviedetective.domain.repository.ContentRepository
@@ -53,8 +53,8 @@ class SplashViewModel @Inject constructor(
                     }
 
                     is NetworkResponseState.Success -> {
-                        _state.value = ScreenState.Success(true)
                         GenreList.setMovieGenreList(result.result)
+                        _state.value = ScreenState.Success(true)
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package com.softcross.moviedetective.data.remote
 
+import androidx.paging.PagingSource
 import com.softcross.moviedetective.BuildConfig
 import com.softcross.moviedetective.data.dto.MovieDetailDto
 import com.softcross.moviedetective.data.dto.genre.GenreResponse
@@ -10,7 +11,7 @@ import retrofit2.http.Query
 
 interface MovieService {
     @GET("movie/top_rated?api_key=${BuildConfig.API_KEY}")
-    suspend fun getTopMovies(@Query("page") page: Int = 1): MoviesResponse
+    suspend fun getPopularMovies(@Query("page") page: Int = 1): MoviesResponse
 
     @GET("movie/popular?api_key=${BuildConfig.API_KEY}")
     suspend fun getTrendMovies(): MoviesResponse
@@ -26,4 +27,7 @@ interface MovieService {
 
     @GET("genre/movie/list?api_key=${BuildConfig.API_KEY}")
     suspend fun getMovieGenres(): GenreResponse
+
+    @GET("movie/top_rated?api_key=${BuildConfig.API_KEY}")
+    fun pagingSource(): PagingSource<Int, MoviesResponse>
 }

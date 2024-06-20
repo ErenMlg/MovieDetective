@@ -1,5 +1,6 @@
 package com.softcross.moviedetective.repository
 
+import androidx.paging.Pager
 import com.softcross.moviedetective.core.common.NetworkResponseState
 import com.softcross.moviedetective.core.common.extensions.mapResponse
 import com.softcross.moviedetective.data.dto.MovieDetailDto
@@ -49,19 +50,34 @@ class FakeContentRepository : ContentRepository {
         }
     }
 
-
-    override fun getTop20Movie(): Flow<NetworkResponseState<List<Movie>>> =
+    override fun getPopularMovies(page: Int): Flow<NetworkResponseState<List<Movie>>> =
         moviesResult.map { it.mapResponse { mapper.map(this) } }
+
+    override fun getPopularMoviesByPage(): Pager<Int, Movie> {
+        TODO("Not yet implemented")
+    }
 
 
     override fun getTrendMovies(): Flow<NetworkResponseState<List<Movie>>> =
         moviesResult.map { it.mapResponse { mapper.map(this) } }
 
+    override fun getTrendMoviesByPage(): Pager<Int, Movie> {
+        TODO("Not yet implemented")
+    }
+
     override fun getComingSoonMovies(): Flow<NetworkResponseState<List<Movie>>> =
         moviesResult.map { it.mapResponse { mapper.map(this) } }
 
+    override fun getComingMoviesByPage(): Pager<Int, Movie> {
+        TODO("Not yet implemented")
+    }
+
     override fun getMovieByGenre(genres: String): Flow<NetworkResponseState<List<Movie>>> =
         moviesResult.map { it.mapResponse { mapper.map(this) } }
+
+    override fun getMoviesByGenreByPage(): Pager<Int, Movie> {
+        TODO("Not yet implemented")
+    }
 
     override fun getSingleMovie(movieID: Int): Flow<NetworkResponseState<Movie>> =
         singleMovieResult.map {

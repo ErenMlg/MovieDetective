@@ -22,3 +22,7 @@ object Register : Destination {
 object Home : Destination {
     override val route: String = "home"
 }
+
+object PopularMovies : Destination {
+    override val route: String = "popularMovies"
+}

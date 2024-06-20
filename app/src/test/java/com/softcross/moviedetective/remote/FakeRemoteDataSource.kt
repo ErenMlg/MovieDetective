@@ -6,6 +6,7 @@ import com.softcross.moviedetective.data.dto.actors.ActorResponse
 import com.softcross.moviedetective.data.dto.genre.GenreResponse
 import com.softcross.moviedetective.data.dto.movies.MoviesResponse
 import com.softcross.moviedetective.data.source.remote.RemoteDataSource
+import com.softcross.moviedetective.data.source.remote.RemoteMovieMediator
 import com.softcross.moviedetective.moviesResult
 import com.softcross.moviedetective.singleMovieResult
 import kotlinx.coroutines.flow.Flow
@@ -35,17 +36,12 @@ class FakeRemoteDataSource : RemoteDataSource {
         this.showErrorForSingleMovie = showError
     }
 
-    override fun getTop20Movie(): Flow<NetworkResponseState<MoviesResponse>> {
-        return flow {
-            emit(NetworkResponseState.Loading)
-            if (showErrorForTopMovies) {
-                emit(NetworkResponseState.Error(IOException()))
-            } else {
-                emit(
-                    NetworkResponseState.Success(moviesResult)
-                )
-            }
-        }
+    override fun getPopularMovies(page: Int): Flow<NetworkResponseState<MoviesResponse>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getPopularMoviesWithPaging(): RemoteMovieMediator {
+        TODO("Not yet implemented")
     }
 
     override fun getTrendMovies(): Flow<NetworkResponseState<MoviesResponse>> {

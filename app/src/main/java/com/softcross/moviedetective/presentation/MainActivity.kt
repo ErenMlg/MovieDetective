@@ -34,8 +34,9 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
                 ) { innerPadding ->
+                    val navController = rememberNavController()
                     MovieNavHost(
-                        navHostController = rememberNavController(),
+                        navHostController = navController,
                         modifier = Modifier
                             .padding(innerPadding)
                             .consumeWindowInsets(innerPadding)

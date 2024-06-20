@@ -1,4 +1,4 @@
-package com.softcross.moviedetective.presentation.home.components
+package com.softcross.moviedetective.presentation.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -6,13 +6,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,14 +28,14 @@ import androidx.compose.ui.unit.sp
 import com.softcross.moviedetective.R
 import com.softcross.moviedetective.core.common.components.CustomAsyncImage
 import com.softcross.moviedetective.core.common.components.CustomText
-import com.softcross.moviedetective.core.common.components.GenreItem
 import com.softcross.moviedetective.core.common.extensions.convertToFormattedYear
 import com.softcross.moviedetective.domain.model.Movie
 
 
 @Composable
-fun DiscoverMovieItem(movie: Movie) {
+fun TrendContentItem(movie: Movie) {
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .padding(8.dp)
             .shadow(8.dp, MaterialTheme.shapes.small)
@@ -46,9 +45,9 @@ fun DiscoverMovieItem(movie: Movie) {
     ) {
         CustomAsyncImage(
             model = movie.movieImage,
-            contentDescription = movie.movieName,
-            alignment = Alignment.CenterStart,
-            contentScale = ContentScale.Inside,
+            contentDescription = "",
+            alignment = Alignment.Center,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .padding(8.dp)
                 .shadow(elevation = 8.dp, MaterialTheme.shapes.small)
@@ -57,18 +56,13 @@ fun DiscoverMovieItem(movie: Movie) {
         )
         CustomText(
             text = movie.movieName,
-            textAlign = TextAlign.Center,
             fontFamilyID = R.font.poppins_medium,
+            textAlign = TextAlign.Start,
             fontSize = 14.sp,
-            modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)
+            modifier = Modifier
+                .padding(top = 8.dp, start = 8.dp, end = 8.dp).fillMaxWidth()
         )
-        LazyRow(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-            items(
-                movie.genres,
-            ) {
-                GenreItem(it)
-            }
-        }
+        Spacer(modifier = Modifier.size(16.dp))
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
@@ -89,7 +83,7 @@ fun DiscoverMovieItem(movie: Movie) {
                 fontFamilyID = R.font.poppins_semi_bold,
                 modifier = Modifier
                     .weight(0.3f)
-                    .padding(start = 4.dp)
+                    .padding(start = 2.dp)
             )
             CustomText(
                 text = movie.releaseDate.convertToFormattedYear(),
@@ -103,20 +97,19 @@ fun DiscoverMovieItem(movie: Movie) {
     }
 }
 
-
 @Preview(name = "Light", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Composable
-private fun DiscoverMovieItemPreview() {
+private fun TrendContentItemPreview() {
     MaterialTheme {
-        DiscoverMovieItem(
+        TrendContentItem(
             Movie(
-                movieID = 6593,
-                movieName = "Simone Alexander",
-                description = "nec",
+                movieID = 8778,
+                movieName = "Adrian Parker",
+                description = "urna",
                 genres = listOf(),
                 imdb = 2.3f,
-                releaseDate = "2024-12-08",
-                movieImage = "qui"
+                releaseDate = "2024-12-12",
+                movieImage = "utroque"
             )
         )
     }

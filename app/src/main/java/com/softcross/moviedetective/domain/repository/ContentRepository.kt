@@ -1,5 +1,6 @@
 package com.softcross.moviedetective.domain.repository
 
+import androidx.paging.Pager
 import com.softcross.moviedetective.core.common.NetworkResponseState
 import com.softcross.moviedetective.domain.model.Actor
 import com.softcross.moviedetective.domain.model.Genre
@@ -8,10 +9,14 @@ import kotlinx.coroutines.flow.Flow
 
 interface ContentRepository {
 
-    fun getTop20Movie(): Flow<NetworkResponseState<List<Movie>>>
+    fun getPopularMovies(page: Int = 1): Flow<NetworkResponseState<List<Movie>>>
+    fun getPopularMoviesByPage() : Pager<Int, Movie>
     fun getTrendMovies(): Flow<NetworkResponseState<List<Movie>>>
+    fun getTrendMoviesByPage() : Pager<Int, Movie>
     fun getComingSoonMovies(): Flow<NetworkResponseState<List<Movie>>>
+    fun getComingMoviesByPage() : Pager<Int, Movie>
     fun getMovieByGenre(genres: String): Flow<NetworkResponseState<List<Movie>>>
+    fun getMoviesByGenreByPage() : Pager<Int, Movie>
     fun getSingleMovie(movieID: Int): Flow<NetworkResponseState<Movie>>
 
     //Genre

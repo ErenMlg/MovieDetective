@@ -1,4 +1,4 @@
-package com.softcross.moviedetective.core.common
+package com.softcross.moviedetective.common
 
 import com.softcross.moviedetective.domain.model.Genre
 
@@ -10,7 +10,9 @@ object GenreList {
         movieGenreList = list
     }
 
-    fun getMovieGenreList(): List<Genre> = movieGenreList
+    fun getMovieGenreList(): List<Genre> {
+        return movieGenreList
+    }
 
     fun findMovieGenreWithID(genreID: Int) : Genre {
        return movieGenreList.find { it.genreID == genreID } ?: Genre(0,"")

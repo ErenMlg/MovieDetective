@@ -25,13 +25,17 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asComposeRenderEffect
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -39,22 +43,21 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.softcross.moviedetective.R
 import com.softcross.moviedetective.common.CurrentUser
+import com.softcross.moviedetective.common.GenreList
 import com.softcross.moviedetective.common.extensions.clickableWithoutIndicator
-import com.softcross.moviedetective.core.common.GenreList
 import com.softcross.moviedetective.core.common.ScreenState
 import com.softcross.moviedetective.core.common.components.CustomText
 import com.softcross.moviedetective.core.common.components.ErrorScreen
 import com.softcross.moviedetective.core.common.extensions.startOffsetForPage
 import com.softcross.moviedetective.domain.model.Actor
-import com.softcross.moviedetective.domain.model.Genre
 import com.softcross.moviedetective.domain.model.Movie
-import com.softcross.moviedetective.presentation.home.components.ComingMovieItem
-import com.softcross.moviedetective.presentation.home.components.DiscoverMovieItem
-import com.softcross.moviedetective.presentation.home.components.LoadingContentItems
-import com.softcross.moviedetective.presentation.home.components.LoadingHeaderContentItem
-import com.softcross.moviedetective.presentation.home.components.PopularContentItem
-import com.softcross.moviedetective.presentation.home.components.PopularPeopleItem
-import com.softcross.moviedetective.presentation.home.components.TrendMovieItem
+import com.softcross.moviedetective.presentation.components.ComingContentItem
+import com.softcross.moviedetective.presentation.components.DiscoverContentItem
+import com.softcross.moviedetective.presentation.components.LoadingContentItems
+import com.softcross.moviedetective.presentation.components.LoadingHeaderContentItem
+import com.softcross.moviedetective.presentation.components.PopularContentItem
+import com.softcross.moviedetective.presentation.components.PopularPeopleItem
+import com.softcross.moviedetective.presentation.components.TrendContentItem
 import kotlinx.coroutines.delay
 
 
@@ -62,11 +65,16 @@ import kotlinx.coroutines.delay
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
-    onExit: () -> Unit
+    onExit: () -> Unit,
+    onPopularMovies: () -> Unit
 ) {
-    val selectedGenreList = remember { mutableListOf<Int>() }
     val scrollState = rememberScrollState()
     val context = LocalContext.current
+    val topMovieState = viewModel.popularMovieState.value
+    val trendMovieState = viewModel.trendMovieState.value
+    val discoverMovieState = viewModel.discoverMovieState.value
+    val upcomingMovieState = viewModel.upcomingMovieState.value
+    val popularPeopleState = viewModel.popularPeopleState.value
     Column(
         modifier
             .fillMaxSize()
@@ -76,7 +84,9 @@ fun HomeScreen(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
         ) {
             CustomText(
                 text = "Welcome ${CurrentUser.getCurrentUserName()}",
@@ -84,15 +94,15 @@ fun HomeScreen(
                 fontSize = 24.sp,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
-                    .padding(start = 16.dp, top = 16.dp)
+                    .padding(start = 16.dp)
             )
             Image(
                 painter = painterResource(id = R.drawable.icon_exit),
                 contentDescription = "",
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+                contentScale = ContentScale.Inside,
                 modifier = Modifier
-                    .size(40.dp)
-                    .padding(end = 16.dp, top = 16.dp)
+                    .padding(end = 16.dp)
                     .clickableWithoutIndicator {
                         context
                             .getSharedPreferences("logFile", Context.MODE_PRIVATE)
@@ -105,43 +115,51 @@ fun HomeScreen(
         }
         ContentTitleField(
             title = "Popular",
-            subTitle = "Explore popular movies on all time"
+            subTitle = "Explore popular movies on all time",
+            onClick = remember {
+                { onPopularMovies() }
+            }
         )
-        PopularContent(viewModel.topMovieState.value)
+        PopularContent(topMovieState)
         ContentTitleField(
             title = "Trend",
-            subTitle = "Explore trend movies on close time"
+            subTitle = "Explore trend movies on close time",
+            onClick = remember {
+                { onPopularMovies() }
+            }
         )
-        TrendMoviesContent(viewModel.trendMovieState.value)
+        TrendMoviesContent(trendMovieState)
         ContentTitleField(
             title = "Discover",
-            subTitle = "Explore movies and with category"
+            subTitle = "Explore movies and with category",
+            onClick = remember {
+                { onPopularMovies() }
+            }
         )
         GenreSelectionField(
-            onSelect = {
-                if (selectedGenreList.contains(it)) {
-                    selectedGenreList.remove(it)
-                } else {
-                    selectedGenreList.add(it)
+            onSelect = remember {
+                { genreList ->
+                    viewModel.discoverMovie(genreList)
                 }
-                if (selectedGenreList.isEmpty()) viewModel.discoverMoviesByGenre(listOf(12, 28))
-                else viewModel.discoverMoviesByGenre(selectedGenreList)
-            },
-            selectedGenreList = selectedGenreList
+            }
         )
-        DiscoverMovieContent(viewModel.discoverMovieState.value)
-
-
+        DiscoverMovieContent(discoverMovieState)
         ContentTitleField(
             title = "Coming Soon",
-            subTitle = "Explore coming movies on soon"
+            subTitle = "Explore coming movies on soon",
+            onClick = remember {
+                { onPopularMovies() }
+            }
         )
-        ComingSoonMovieContent(viewModel.upcomingMovieState.value)
+        ComingSoonMovieContent(upcomingMovieState)
         ContentTitleField(
             title = "Popular People",
-            subTitle = "Explore popular actors on close time"
+            subTitle = "Explore popular actors on close time",
+            onClick = remember {
+                { onPopularMovies() }
+            }
         )
-        PopularPeoplesContent(viewModel.popularPeopleState.value)
+        PopularPeoplesContent(popularPeopleState)
     }
 }
 
@@ -208,10 +226,11 @@ fun TrendMoviesContent(state: ScreenState<List<Movie>>) {
 
         is ScreenState.Success -> {
             LazyRow(
-                modifier = Modifier.padding(vertical = 8.dp)
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
             ) {
                 items(items = state.uiData, key = { it.movieID }) { movie ->
-                    TrendMovieItem(movie = movie)
+                    TrendContentItem(movie = movie)
                 }
             }
         }
@@ -220,20 +239,33 @@ fun TrendMoviesContent(state: ScreenState<List<Movie>>) {
 
 @Composable
 fun GenreSelectionField(
-    onSelect: (Int) -> Unit,
-    genreList: List<Genre> = GenreList.getMovieGenreList(),
-    selectedGenreList: List<Int>
+    onSelect: (List<Int>) -> Unit
 ) {
+    val selectedGenreList = remember { mutableListOf<Int>() }
+    val genreList = remember { GenreList.getMovieGenreList() }
+    var isSelected by remember {
+        mutableStateOf(false)
+    }
     LazyRow(
         Modifier.padding(top = 8.dp)
     ) {
         items(items = genreList, key = { it.genreID }) { genre ->
-            val isSelected = selectedGenreList.contains(genre.genreID)
+            isSelected = selectedGenreList.contains(genre.genreID)
             Card(
                 modifier = Modifier
                     .padding(horizontal = 4.dp)
                     .clickableWithoutIndicator {
-                        onSelect(genre.genreID)
+                        if (selectedGenreList.contains(genre.genreID)) {
+                            selectedGenreList.remove(genre.genreID)
+                        } else {
+                            selectedGenreList.add(genre.genreID)
+                        }
+                        isSelected = selectedGenreList.contains(genre.genreID)
+                        if (selectedGenreList.isEmpty()) {
+                            onSelect(listOf(12, 28))
+                        } else {
+                            onSelect(selectedGenreList)
+                        }
                     },
                 elevation = CardDefaults.cardElevation(4.dp),
                 colors = CardDefaults.cardColors(
@@ -254,7 +286,6 @@ fun GenreSelectionField(
 fun DiscoverMovieContent(
     state: ScreenState<List<Movie>>
 ) {
-    println("Recreated Discover Movie Content")
     when (state) {
         is ScreenState.Error -> ErrorScreen(message = state.message)
 
@@ -275,7 +306,7 @@ fun DiscoverMovieContent(
                     .padding(vertical = 8.dp)
             ) {
                 items(items = state.uiData, key = { it.movieID }) { movie ->
-                    DiscoverMovieItem(movie = movie)
+                    DiscoverContentItem(movie = movie)
                 }
             }
         }
@@ -298,10 +329,12 @@ fun ComingSoonMovieContent(state: ScreenState<List<Movie>>) {
 
         is ScreenState.Success -> {
             LazyRow(
-                modifier = Modifier.padding(vertical = 8.dp)
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
             ) {
-                items(items = state.uiData, key = { it.movieID }) { movie ->
-                    ComingMovieItem(movie = movie)
+                items(items = state.uiData,
+                    key = { it.movieID }) { movie ->
+                    ComingContentItem(movie = movie)
                 }
             }
         }
@@ -323,7 +356,8 @@ fun PopularPeoplesContent(state: ScreenState<List<Actor>>) {
 
         is ScreenState.Success -> {
             LazyRow(
-                modifier = Modifier.padding(top = 8.dp, bottom = 24.dp)
+                modifier = Modifier
+                    .padding(top = 8.dp, bottom = 24.dp)
             ) {
                 items(
                     items = state.uiData,
@@ -338,8 +372,7 @@ fun PopularPeoplesContent(state: ScreenState<List<Actor>>) {
 }
 
 @Composable
-fun ContentTitleField(title: String, subTitle: String) {
-    println("Recreated Content Title Field")
+fun ContentTitleField(title: String, subTitle: String, onClick: () -> Unit) {
     CustomText(
         text = title,
         fontFamilyID = R.font.poppins_semi_bold,
@@ -351,7 +384,7 @@ fun ContentTitleField(title: String, subTitle: String) {
     )
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
         CustomText(
             text = subTitle,
@@ -366,8 +399,9 @@ fun ContentTitleField(title: String, subTitle: String) {
             text = "View More",
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
-                .weight(0.2f)
+                .weight(0.25f)
                 .padding(start = 16.dp)
+                .clickableWithoutIndicator { onClick() }
         )
         Image(
             painter = painterResource(id = R.drawable.icon_left_arrow),
@@ -377,6 +411,7 @@ fun ContentTitleField(title: String, subTitle: String) {
                 .size(12.dp)
                 .weight(0.1f)
                 .padding(end = 8.dp)
+                .clickableWithoutIndicator { onClick() }
         )
     }
 }

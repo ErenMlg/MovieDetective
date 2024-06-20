@@ -16,7 +16,7 @@ internal class FakeRemoteDataSourceTest {
     @Test
     fun topMovieResponse_whenRemoteDataSourceReturnSuccess_returnSuccess(){
         runBlocking {
-            fakeRemoteDataSource.getTop20Movie().test {
+            fakeRemoteDataSource.getPopularMovies(1).test {
                 Truth.assertThat(awaitItem()).isInstanceOf(NetworkResponseState.Loading::class.java)
                 Truth.assertThat(awaitItem()).isInstanceOf(NetworkResponseState.Success::class.java)
                 awaitComplete()
@@ -28,7 +28,7 @@ internal class FakeRemoteDataSourceTest {
     fun topMovieResponse_whenRemoteDataSourceReturnError_returnError(){
         runBlocking {
             fakeRemoteDataSource.updateShowErrorForTopMovies(true)
-            fakeRemoteDataSource.getTop20Movie().test {
+            fakeRemoteDataSource.getPopularMovies(1).test {
                 Truth.assertThat(awaitItem()).isInstanceOf(NetworkResponseState.Loading::class.java)
                 Truth.assertThat(awaitItem()).isInstanceOf(NetworkResponseState.Error::class.java)
                 awaitComplete()

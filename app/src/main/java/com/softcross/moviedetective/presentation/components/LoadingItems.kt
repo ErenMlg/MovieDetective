@@ -1,4 +1,4 @@
-package com.softcross.moviedetective.presentation.home.components
+package com.softcross.moviedetective.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

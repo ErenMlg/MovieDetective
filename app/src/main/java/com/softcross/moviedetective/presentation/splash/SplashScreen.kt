@@ -58,7 +58,7 @@ fun SplashScreen(
         is ScreenState.Success -> {
             if (stayLogged) {
                 LaunchedEffect(key1 = viewModel.userState.value) {
-                    onLogged()
+                    if (viewModel.userState.value) onLogged()
                 }
             } else {
                 LaunchedEffect(key1 = state) {

@@ -127,6 +127,9 @@ dependencies {
     //Retrofit
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.gson)
+    //Paging
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.paging.compose)
 
 
 

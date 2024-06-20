@@ -1,4 +1,4 @@
-package com.softcross.moviedetective.presentation.home.components
+package com.softcross.moviedetective.presentation.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -29,7 +29,7 @@ import com.softcross.moviedetective.core.common.extensions.convertToFormattedDat
 import com.softcross.moviedetective.domain.model.Movie
 
 @Composable
-fun ComingMovieItem(movie: Movie) {
+fun ComingContentItem(movie: Movie) {
     Column(
         modifier = Modifier
             .padding(8.dp)
@@ -43,7 +43,7 @@ fun ComingMovieItem(movie: Movie) {
                 model = movie.movieImage,
                 contentDescription = movie.movieName,
                 alignment = Alignment.Center,
-                contentScale = ContentScale.Inside,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .padding(8.dp)
                     .shadow(elevation = 8.dp, MaterialTheme.shapes.small)
@@ -78,9 +78,9 @@ fun ComingMovieItem(movie: Movie) {
 
 @Preview(name = "Light", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Composable
-private fun ComingMovieItemPreview() {
+private fun ComingContentItemPreview() {
     MaterialTheme {
-        ComingMovieItem(
+        ComingContentItem(
             Movie(
                 movieID = 6593,
                 movieName = "Simone Alexander",

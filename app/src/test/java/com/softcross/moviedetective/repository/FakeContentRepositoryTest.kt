@@ -25,7 +25,7 @@ internal class FakeContentRepositoryTest {
     @Test
     fun top20MovieResponse_whenTop20MovieRequestedMapped_hasSame() = runBlocking {
         fakeContentRepository.updateMoviesResultState(data = listOf(firstItemTopMovies))
-        fakeContentRepository.getTop20Movie().test {
+        fakeContentRepository.getPopularMovies().test {
             val response = awaitItem()
             Assert.assertEquals(
                 NetworkResponseState.Success(mappedTopMovieListFirstItem),
@@ -36,7 +36,7 @@ internal class FakeContentRepositoryTest {
     @Test
     fun top20MovieResponse_whenTop20MovieRequestedReturnError_returnError() = runBlocking {
         fakeContentRepository.updateMoviesResultState(isError = true)
-        fakeContentRepository.getTop20Movie().test {
+        fakeContentRepository.getPopularMovies().test {
             Truth.assertThat(awaitItem()).isInstanceOf(NetworkResponseState.Error::class.java)
         }
     }

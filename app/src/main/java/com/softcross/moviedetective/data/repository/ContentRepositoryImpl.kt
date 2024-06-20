@@ -1,5 +1,8 @@
 package com.softcross.moviedetective.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingSource
 import com.softcross.moviedetective.core.common.NetworkResponseState
 import com.softcross.moviedetective.core.common.extensions.mapResponse
 import com.softcross.moviedetective.data.dto.actors.ActorDto
@@ -21,25 +24,44 @@ class ContentRepositoryImpl @Inject constructor(
     private val genreResponseListMapper: MovieDetectiveListMapper<GenreDto, Genre>,
     private val actorResponseListMapper: MovieDetectiveListMapper<ActorDto, Actor>
 ) : ContentRepository {
-    override fun getTop20Movie(): Flow<NetworkResponseState<List<Movie>>> =
-        remoteDataSource.getTop20Movie().map {
+
+    override fun getPopularMovies(page: Int): Flow<NetworkResponseState<List<Movie>>> =
+        remoteDataSource.getPopularMovies(page).map {
             it.mapResponse { movieResponseListMapper.map(data) }
         }
+
+    override fun getPopularMoviesByPage(): Pager<Int, Movie> = Pager(
+        config = PagingConfig(pageSize = 20),
+        pagingSourceFactory = { remoteDataSource.getPopularMoviesWithPaging() }
+    )
+
 
     override fun getTrendMovies(): Flow<NetworkResponseState<List<Movie>>> =
         remoteDataSource.getTrendMovies().map {
             it.mapResponse { movieResponseListMapper.map(data) }
         }
 
+    override fun getTrendMoviesByPage(): Pager<Int, Movie> {
+        TODO("Not yet implemented")
+    }
+
     override fun getComingSoonMovies(): Flow<NetworkResponseState<List<Movie>>> =
         remoteDataSource.getComingSoonMovies().map {
             it.mapResponse { movieResponseListMapper.map(data) }
         }
 
+    override fun getComingMoviesByPage(): Pager<Int, Movie> {
+        TODO("Not yet implemented")
+    }
+
     override fun getMovieByGenre(genres: String): Flow<NetworkResponseState<List<Movie>>> =
         remoteDataSource.getMovieByGenre(genres).map {
             it.mapResponse { movieResponseListMapper.map(data) }
         }
+
+    override fun getMoviesByGenreByPage(): Pager<Int, Movie> {
+        TODO("Not yet implemented")
+    }
 
     override fun getSingleMovie(movieID: Int): Flow<NetworkResponseState<Movie>> =
         remoteDataSource.getSingleMovie(movieID).map {

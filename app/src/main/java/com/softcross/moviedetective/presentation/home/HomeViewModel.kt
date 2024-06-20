@@ -1,5 +1,6 @@
 package com.softcross.moviedetective.presentation.home
 
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -10,10 +11,7 @@ import com.softcross.moviedetective.domain.model.Actor
 import com.softcross.moviedetective.domain.model.Movie
 import com.softcross.moviedetective.domain.repository.ContentRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,9 +19,10 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val contentRepository: ContentRepository
 ) : ViewModel() {
+
     //Top Movies State
-    private val _topMovieState = mutableStateOf<ScreenState<List<Movie>>>(ScreenState.Loading)
-    val topMovieState: State<ScreenState<List<Movie>>> get() = _topMovieState
+    private val _popularMovieState = mutableStateOf<ScreenState<List<Movie>>>(ScreenState.Loading)
+    val popularMovieState: State<ScreenState<List<Movie>>> get() = _popularMovieState
 
     //Trend Movies State
     private val _trendMovieState = mutableStateOf<ScreenState<List<Movie>>>(ScreenState.Loading)
@@ -46,27 +45,27 @@ class HomeViewModel @Inject constructor(
 
     init {
         getTrendMovies()
-        getTopMovies()
-        discoverMovie("28, 12")
+        getPopularMovies()
+        discoverMovie(listOf(12, 28))
         getComingMovies()
         getPopularPeoples()
     }
 
-    private fun getTopMovies() {
+    private fun getPopularMovies() {
         viewModelScope.launch {
-            contentRepository.getTop20Movie().collect { result ->
+            contentRepository.getPopularMovies().collect { result ->
                 when (result) {
                     is NetworkResponseState.Error -> {
-                        _topMovieState.value =
+                        _popularMovieState.value =
                             ScreenState.Error(result.exception.message.toString())
                     }
 
                     is NetworkResponseState.Success -> {
-                        _topMovieState.value = ScreenState.Success(result.result)
+                        _popularMovieState.value = ScreenState.Success(result.result)
                     }
 
                     is NetworkResponseState.Loading -> {
-                        _topMovieState.value = ScreenState.Loading
+                        _popularMovieState.value = ScreenState.Loading
                     }
                 }
             }
@@ -94,13 +93,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun discoverMoviesByGenre(genreIDs: List<Int>) {
-        val convertedList = genreIDs.toString().replace("[", "").replace("]", "").replace(" ", "")
-        discoverMovie(convertedList)
-    }
-
-    private fun discoverMovie(convertedList: String) {
+    fun discoverMovie(genreIDs: List<Int>) {
         viewModelScope.launch {
+        val convertedList = genreIDs.toString().replace("[", "").replace("]", "").replace(" ", "")
             contentRepository.getMovieByGenre(convertedList).collect { result ->
                 when (result) {
                     is NetworkResponseState.Error -> {

@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.softcross.moviedetective.R
-import com.softcross.moviedetective.core.common.GenreList
+import com.softcross.moviedetective.common.GenreList
 
 @Composable
 fun GenreItem(genreID: Int, modifier: Modifier = Modifier) {

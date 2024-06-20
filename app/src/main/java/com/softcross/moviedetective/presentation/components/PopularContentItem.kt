@@ -1,4 +1,4 @@
-package com.softcross.moviedetective.presentation.home.components
+package com.softcross.moviedetective.presentation.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -108,7 +108,7 @@ fun PopularContentItem(movie: Movie, modifier: Modifier) {
             model = movie.movieImage,
             contentDescription = "",
             alignment = Alignment.CenterStart,
-            contentScale = ContentScale.Inside,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .height(256.dp)
                 .width(145.dp)
