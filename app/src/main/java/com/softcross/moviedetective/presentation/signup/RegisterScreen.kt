@@ -1,5 +1,6 @@
 package com.softcross.moviedetective.presentation.signup
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -17,12 +18,14 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -34,11 +37,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.softcross.moviedetective.R
 import com.softcross.moviedetective.common.CurrentUser
 import com.softcross.moviedetective.common.extensions.clickableWithoutIndicator
-import com.softcross.moviedetective.core.common.components.CustomPasswordTextField
-import com.softcross.moviedetective.core.common.components.CustomSnackbar
-import com.softcross.moviedetective.core.common.components.CustomText
-import com.softcross.moviedetective.core.common.components.CustomTextField
-import com.softcross.moviedetective.core.common.components.LoadingTextButton
+import com.softcross.moviedetective.presentation.components.CustomPasswordTextField
+import com.softcross.moviedetective.presentation.components.CustomSnackbar
+import com.softcross.moviedetective.presentation.components.CustomText
+import com.softcross.moviedetective.presentation.components.CustomTextField
+import com.softcross.moviedetective.presentation.components.LoadingTextButton
 import com.softcross.moviedetective.core.common.extensions.emailRegex
 import com.softcross.moviedetective.core.common.extensions.nameSurnameRegex
 import com.softcross.moviedetective.core.common.extensions.passwordRegex
@@ -52,6 +55,7 @@ fun RegisterScreen(
     onLogin: () -> Unit
 ) {
     val uiState = viewModel.registerUiState.value
+    val context = LocalContext.current
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
@@ -60,9 +64,15 @@ fun RegisterScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
     val scrollState = rememberScrollState()
 
-    uiState.user?.let {
-        onSuccess()
-        CurrentUser.setCurrentUser(it)
+    LaunchedEffect(uiState.user) {
+        uiState.user?.let {
+            CurrentUser.setCurrentUser(it)
+            context.getSharedPreferences("logFile", Context.MODE_PRIVATE).edit()
+                .putBoolean("stayLogged", true).apply()
+            context.getSharedPreferences("logFile", Context.MODE_PRIVATE).edit()
+                .putString("userID", CurrentUser.getCurrentUserID()).apply()
+            onSuccess()
+        }
     }
 
     Box(modifier.imePadding()) {

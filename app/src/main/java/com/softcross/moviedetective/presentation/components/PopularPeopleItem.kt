@@ -18,8 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.softcross.moviedetective.R
-import com.softcross.moviedetective.core.common.components.CustomAsyncImage
-import com.softcross.moviedetective.core.common.components.CustomText
 import com.softcross.moviedetective.domain.model.Actor
 
 
@@ -58,6 +56,6 @@ fun PopularPeopleItem(people: Actor) {
 @Composable
 private fun PopularPeopleItemPreview() {
     MaterialTheme {
-        PopularPeopleItem(Actor(id = 6815, name = "Perry Jones", gender = 1, image = "iisque"))
+        PopularPeopleItem(Actor(id = 6815, name = "Perry Jones", gender = 1, image = "iisque", character = "Voice (Riley)"))
     }
 }

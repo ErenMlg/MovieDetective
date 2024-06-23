@@ -1,4 +1,4 @@
-package com.softcross.moviedetective.core.common.components
+package com.softcross.moviedetective.presentation.components
 
 import android.content.res.Configuration
 import androidx.annotation.StringRes
@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -23,8 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.softcross.moviedetective.R
-import com.softcross.moviedetective.core.common.extensions.emailRegex
-import com.softcross.moviedetective.core.common.extensions.passwordRegex
 
 @Composable
 fun LoadingTextButton(

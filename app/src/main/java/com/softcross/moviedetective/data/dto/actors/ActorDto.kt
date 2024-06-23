@@ -10,5 +10,7 @@ data class ActorDto(
     @SerializedName("gender")
     val gender: Int,
     @SerializedName("profile_path")
-    val image: String,
+    val image: String?,
+    @SerializedName("character")
+    val character: String?,
 )

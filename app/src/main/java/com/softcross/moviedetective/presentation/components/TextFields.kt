@@ -1,4 +1,4 @@
-package com.softcross.moviedetective.core.common.components
+package com.softcross.moviedetective.presentation.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -44,7 +44,6 @@ import androidx.compose.ui.unit.sp
 import com.softcross.moviedetective.R
 import com.softcross.moviedetective.core.common.extensions.passwordRegex
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun CustomTextField(
     givenValue: String,
@@ -56,7 +55,6 @@ fun CustomTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     regex: String.() -> Boolean
 ) {
-    var density = LocalDensity.current
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,

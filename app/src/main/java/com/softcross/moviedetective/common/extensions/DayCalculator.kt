@@ -1,19 +1,21 @@
-package com.softcross.moviedetective.core.common.extensions
+package com.softcross.moviedetective.common.extensions
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Locale
 
-fun calculateRemainingDays(date: String): Long = ChronoUnit.DAYS.between(
-    LocalDate.now(),
-    LocalDate.parse(date)
-)
+fun calculateRemainingDays(date: String): Long {
+    val remainDay = ChronoUnit.DAYS.between(
+        LocalDate.now(),
+        LocalDate.parse(date)
+    )
+    return if (remainDay < 0) {
+        0
+    } else {
+        remainDay
+    }
+}
 
 fun String.convertToFormattedDate(): String {
     val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -23,8 +25,12 @@ fun String.convertToFormattedDate(): String {
 }
 
 fun String.convertToFormattedYear(): String {
-    val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val outputFormatter = DateTimeFormatter.ofPattern("yyyy", Locale.ENGLISH)
-    val date = LocalDate.parse(this, inputFormatter)
-    return date.format(outputFormatter)
+    try {
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val outputFormatter = DateTimeFormatter.ofPattern("yyyy", Locale.ENGLISH)
+        val date = LocalDate.parse(this, inputFormatter)
+        return date.format(outputFormatter)
+    }catch (e: Exception){
+        return "N/A"
+    }
 }

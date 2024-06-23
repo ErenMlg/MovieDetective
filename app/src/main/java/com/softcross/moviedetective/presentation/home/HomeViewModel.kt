@@ -1,17 +1,16 @@
 package com.softcross.moviedetective.presentation.home
 
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.softcross.moviedetective.common.extensions.listToString
 import com.softcross.moviedetective.core.common.NetworkResponseState
 import com.softcross.moviedetective.core.common.ScreenState
 import com.softcross.moviedetective.domain.model.Actor
 import com.softcross.moviedetective.domain.model.Movie
 import com.softcross.moviedetective.domain.repository.ContentRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -95,8 +94,7 @@ class HomeViewModel @Inject constructor(
 
     fun discoverMovie(genreIDs: List<Int>) {
         viewModelScope.launch {
-        val convertedList = genreIDs.toString().replace("[", "").replace("]", "").replace(" ", "")
-            contentRepository.getMovieByGenre(convertedList).collect { result ->
+            contentRepository.getMovieByGenre(genreIDs.listToString()).collect { result ->
                 when (result) {
                     is NetworkResponseState.Error -> {
                         _discoverMovieState.value =

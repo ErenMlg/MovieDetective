@@ -5,6 +5,7 @@ import com.softcross.moviedetective.data.dto.actors.ActorResponse
 import com.softcross.moviedetective.data.dto.movies.MoviesResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ActorService {
 
@@ -12,6 +13,6 @@ interface ActorService {
     suspend fun getMovieByActor(@Path("actorID") actorID: Int): ActorResponse
 
     @GET("person/popular?api_key=${BuildConfig.API_KEY}")
-    suspend fun getPopularActors(): ActorResponse
+    suspend fun getPopularActors(@Query("page") page: Int = 1): ActorResponse
 
 }

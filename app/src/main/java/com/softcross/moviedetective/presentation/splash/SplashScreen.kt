@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.softcross.moviedetective.R
 import com.softcross.moviedetective.core.common.ScreenState
-import com.softcross.moviedetective.core.common.components.CustomSnackbar
-import com.softcross.moviedetective.core.common.components.CustomText
+import com.softcross.moviedetective.presentation.components.CustomSnackbar
+import com.softcross.moviedetective.presentation.components.CustomText
 
 @Composable
 fun SplashScreen(

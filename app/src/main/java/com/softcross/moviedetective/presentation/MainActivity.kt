@@ -29,12 +29,12 @@ class MainActivity : ComponentActivity() {
                     if (isSystemInDarkTheme()) resources.getColor(R.color.blackgray) else resources.getColor(
                         R.color.white
                     )
+                val navController = rememberNavController()
                 Scaffold(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
                 ) { innerPadding ->
-                    val navController = rememberNavController()
                     MovieNavHost(
                         navHostController = navController,
                         modifier = Modifier

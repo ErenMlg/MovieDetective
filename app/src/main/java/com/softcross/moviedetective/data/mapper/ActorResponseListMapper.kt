@@ -12,7 +12,8 @@ class ActorResponseListMapper @Inject constructor() : MovieDetectiveListMapper<A
                 it.id,
                 it.name,
                 it.gender,
-                it.image
+                it.image ?: "",
+                it.character ?: ""
             )
         }
     }

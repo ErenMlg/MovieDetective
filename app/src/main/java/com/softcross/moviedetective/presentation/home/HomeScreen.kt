@@ -28,6 +28,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,14 +46,15 @@ import com.softcross.moviedetective.R
 import com.softcross.moviedetective.common.CurrentUser
 import com.softcross.moviedetective.common.GenreList
 import com.softcross.moviedetective.common.extensions.clickableWithoutIndicator
+import com.softcross.moviedetective.common.extensions.listToString
 import com.softcross.moviedetective.core.common.ScreenState
-import com.softcross.moviedetective.core.common.components.CustomText
-import com.softcross.moviedetective.core.common.components.ErrorScreen
 import com.softcross.moviedetective.core.common.extensions.startOffsetForPage
 import com.softcross.moviedetective.domain.model.Actor
 import com.softcross.moviedetective.domain.model.Movie
 import com.softcross.moviedetective.presentation.components.ComingContentItem
+import com.softcross.moviedetective.presentation.components.CustomText
 import com.softcross.moviedetective.presentation.components.DiscoverContentItem
+import com.softcross.moviedetective.presentation.components.ErrorScreen
 import com.softcross.moviedetective.presentation.components.LoadingContentItems
 import com.softcross.moviedetective.presentation.components.LoadingHeaderContentItem
 import com.softcross.moviedetective.presentation.components.PopularContentItem
@@ -66,10 +68,18 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
     onExit: () -> Unit,
-    onPopularMovies: () -> Unit
+    onPopularMovies: () -> Unit,
+    onTrendMovies: () -> Unit,
+    onComingMovies: () -> Unit,
+    onDiscoverMovies: (List<Int>) -> Unit,
+    onPopularPeoples: () -> Unit,
+    onMovieClick: (String) -> Unit
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
+    val selectedGenreList = rememberSaveable {
+        mutableListOf<Int>(12, 28)
+    }
     val topMovieState = viewModel.popularMovieState.value
     val trendMovieState = viewModel.trendMovieState.value
     val discoverMovieState = viewModel.discoverMovieState.value
@@ -125,15 +135,17 @@ fun HomeScreen(
             title = "Trend",
             subTitle = "Explore trend movies on close time",
             onClick = remember {
-                { onPopularMovies() }
+                { onTrendMovies() }
             }
         )
-        TrendMoviesContent(trendMovieState)
+        TrendMoviesContent(trendMovieState, onMovieClick)
         ContentTitleField(
             title = "Discover",
             subTitle = "Explore movies and with category",
             onClick = remember {
-                { onPopularMovies() }
+                {
+                    onDiscoverMovies(selectedGenreList)
+                }
             }
         )
         GenreSelectionField(
@@ -141,14 +153,15 @@ fun HomeScreen(
                 { genreList ->
                     viewModel.discoverMovie(genreList)
                 }
-            }
+            },
+            selectedGenreList = selectedGenreList
         )
         DiscoverMovieContent(discoverMovieState)
         ContentTitleField(
             title = "Coming Soon",
             subTitle = "Explore coming movies on soon",
             onClick = remember {
-                { onPopularMovies() }
+                { onComingMovies() }
             }
         )
         ComingSoonMovieContent(upcomingMovieState)
@@ -156,7 +169,7 @@ fun HomeScreen(
             title = "Popular People",
             subTitle = "Explore popular actors on close time",
             onClick = remember {
-                { onPopularMovies() }
+                { onPopularPeoples() }
             }
         )
         PopularPeoplesContent(popularPeopleState)
@@ -210,7 +223,7 @@ fun PopularContent(state: ScreenState<List<Movie>>) {
 }
 
 @Composable
-fun TrendMoviesContent(state: ScreenState<List<Movie>>) {
+fun TrendMoviesContent(state: ScreenState<List<Movie>>, onClick: (String) -> Unit) {
     when (state) {
         is ScreenState.Error -> ErrorScreen(message = state.message)
 
@@ -230,7 +243,7 @@ fun TrendMoviesContent(state: ScreenState<List<Movie>>) {
                     .padding(vertical = 8.dp)
             ) {
                 items(items = state.uiData, key = { it.movieID }) { movie ->
-                    TrendContentItem(movie = movie)
+                    TrendContentItem(movie = movie, onClick)
                 }
             }
         }
@@ -239,9 +252,9 @@ fun TrendMoviesContent(state: ScreenState<List<Movie>>) {
 
 @Composable
 fun GenreSelectionField(
-    onSelect: (List<Int>) -> Unit
+    onSelect: (List<Int>) -> Unit,
+    selectedGenreList: MutableList<Int>
 ) {
-    val selectedGenreList = remember { mutableListOf<Int>() }
     val genreList = remember { GenreList.getMovieGenreList() }
     var isSelected by remember {
         mutableStateOf(false)

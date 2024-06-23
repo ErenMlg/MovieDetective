@@ -1,7 +1,8 @@
-package com.softcross.moviedetective.core.common.components
+package com.softcross.moviedetective.presentation.components
 
 import android.provider.CalendarContract.Colors
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -47,11 +48,28 @@ fun CustomAsyncImage(
                     .fillMaxSize()
                     .background(Color.LightGray)
             ) {
-                CircularProgressIndicator(modifier = Modifier
-                    .size(24.dp)
-                    .align(Alignment.Center),
-                    color = Color.Gray)
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .align(Alignment.Center),
+                    color = Color.Gray
+                )
             }
+        },
+        error = {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.LightGray)
+            ){
+                Image(
+                    painter = painterResource(id = R.drawable.icon_error),
+                    contentDescription = "Error",
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                )
+            }
+
         }
     )
 }

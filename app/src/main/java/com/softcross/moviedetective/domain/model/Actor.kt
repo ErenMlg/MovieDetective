@@ -9,5 +9,6 @@ data class Actor(
     val id: Int,
     val name: String,
     val gender: Int,
-    val image: String
+    val image: String,
+    val character: String
 )

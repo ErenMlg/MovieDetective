@@ -22,10 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.softcross.moviedetective.R
-import com.softcross.moviedetective.core.common.components.CustomAsyncImage
-import com.softcross.moviedetective.core.common.components.CustomText
-import com.softcross.moviedetective.core.common.extensions.calculateRemainingDays
-import com.softcross.moviedetective.core.common.extensions.convertToFormattedDate
+import com.softcross.moviedetective.common.extensions.calculateRemainingDays
+import com.softcross.moviedetective.common.extensions.convertToFormattedDate
 import com.softcross.moviedetective.domain.model.Movie
 
 @Composable
@@ -51,8 +49,9 @@ fun ComingContentItem(movie: Movie) {
                     .height(212.dp)
             )
             Card(modifier = Modifier.padding(16.dp)) {
+                val remainingDays = calculateRemainingDays(movie.releaseDate).toInt()
                 CustomText(
-                    text = "${calculateRemainingDays(movie.releaseDate)} days",
+                    text = if (remainingDays == 0) "Released" else "$remainingDays days",
                     textAlign = TextAlign.Center,
                     fontSize = 10.sp,
                     modifier = Modifier.padding(horizontal = 6.dp)
@@ -87,7 +86,7 @@ private fun ComingContentItemPreview() {
                 description = "nec",
                 genres = listOf(),
                 imdb = 2.3f,
-                releaseDate = "2024-12-08",
+                releaseDate = "2024-03-03",
                 movieImage = "qui"
             )
         )

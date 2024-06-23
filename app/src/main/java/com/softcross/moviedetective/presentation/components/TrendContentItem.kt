@@ -26,17 +26,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.softcross.moviedetective.R
-import com.softcross.moviedetective.core.common.components.CustomAsyncImage
-import com.softcross.moviedetective.core.common.components.CustomText
-import com.softcross.moviedetective.core.common.extensions.convertToFormattedYear
+import com.softcross.moviedetective.common.extensions.clickableWithoutIndicator
+import com.softcross.moviedetective.common.extensions.convertToFormattedYear
 import com.softcross.moviedetective.domain.model.Movie
 
 
 @Composable
-fun TrendContentItem(movie: Movie) {
+fun TrendContentItem(movie: Movie, onClick: (String) -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
+            .clickableWithoutIndicator { onClick(movie.movieID.toString()) }
             .padding(8.dp)
             .shadow(8.dp, MaterialTheme.shapes.small)
             .clip(MaterialTheme.shapes.small)
@@ -60,11 +60,13 @@ fun TrendContentItem(movie: Movie) {
             textAlign = TextAlign.Start,
             fontSize = 14.sp,
             modifier = Modifier
-                .padding(top = 8.dp, start = 8.dp, end = 8.dp).fillMaxWidth()
+                .padding(top = 8.dp, start = 12.dp, end = 8.dp)
+                .fillMaxWidth()
         )
         Spacer(modifier = Modifier.size(16.dp))
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -76,7 +78,7 @@ fun TrendContentItem(movie: Movie) {
                 modifier = Modifier
                     .size(24.dp)
                     .weight(0.2f)
-                    .padding(start = 8.dp)
+                    .padding(start = 12.dp)
             )
             CustomText(
                 text = "%.2f".format(movie.imdb),
@@ -91,7 +93,7 @@ fun TrendContentItem(movie: Movie) {
                 color = Color.Gray,
                 modifier = Modifier
                     .weight(0.6f)
-                    .padding(end = 8.dp)
+                    .padding(end = 12.dp)
             )
         }
     }
@@ -110,7 +112,8 @@ private fun TrendContentItemPreview() {
                 imdb = 2.3f,
                 releaseDate = "2024-12-12",
                 movieImage = "utroque"
-            )
+            ),
+            onClick = {}
         )
     }
 }

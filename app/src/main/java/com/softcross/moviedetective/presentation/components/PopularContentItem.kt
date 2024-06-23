@@ -28,10 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.softcross.moviedetective.R
-import com.softcross.moviedetective.core.common.components.CustomAsyncImage
-import com.softcross.moviedetective.core.common.components.CustomText
-import com.softcross.moviedetective.core.common.components.GenreItem
-import com.softcross.moviedetective.core.common.extensions.convertToFormattedDate
+import com.softcross.moviedetective.common.extensions.convertToFormattedDate
 import com.softcross.moviedetective.domain.model.Movie
 
 @Composable

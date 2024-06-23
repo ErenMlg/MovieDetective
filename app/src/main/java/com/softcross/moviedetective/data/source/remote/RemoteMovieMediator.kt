@@ -13,7 +13,7 @@ import javax.inject.Inject
 class RemoteMovieMediator(
     private val requestType: RequestType,
     private val movieService: MovieService,
-    private val movieMapper: MovieDetectiveListMapper<MovieDto, Movie> = MovieResponseListMapper()
+    private val movieMapper: MovieDetectiveListMapper<MovieDto, Movie> = MovieResponseListMapper(),
 ) : PagingSource<Int, Movie>() {
 
 
@@ -28,11 +28,10 @@ class RemoteMovieMediator(
         return try {
             val page = params.key ?: 1
             val response = when (requestType) {
-                RequestType.POPULAR -> movieService.getPopularMovies(page).data
-                RequestType.TREND -> movieService.getPopularMovies(page).data
-                RequestType.COMING_SOON -> movieService.getPopularMovies(page).data
-                RequestType.GENRE -> movieService.getPopularMovies(page).data
-                RequestType.SINGLE -> movieService.getPopularMovies(page).data
+                is RequestType.POPULAR -> movieService.getPopularMovies(page).data
+                is RequestType.TREND -> movieService.getTrendMovies(page).data
+                is RequestType.COMING_SOON -> movieService.getComingSoonMovies(page).data
+                is RequestType.GENRE -> movieService.getMovieByGenre(requestType.genres, page).data
             }
             val mappedResponse = movieMapper.map(response)
 
@@ -47,10 +46,9 @@ class RemoteMovieMediator(
     }
 }
 
-enum class RequestType {
-    POPULAR,
-    TREND,
-    COMING_SOON,
-    GENRE,
-    SINGLE
+sealed class RequestType {
+    data object POPULAR : RequestType()
+    data object TREND : RequestType()
+    data object COMING_SOON : RequestType()
+    data class GENRE(val genres: String) : RequestType()
 }

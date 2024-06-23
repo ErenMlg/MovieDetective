@@ -1,4 +1,4 @@
-package com.softcross.moviedetective.core.common.components
+package com.softcross.moviedetective.presentation.components
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,12 +15,12 @@ import com.softcross.moviedetective.R
 @Composable
 fun CustomText(
     text: String,
+    modifier: Modifier = Modifier,
     fontSize: TextUnit = 12.sp,
     fontFamilyID: Int = R.font.poppins_regular,
     color: Color = Color.DarkGray,
     textAlign: TextAlign = TextAlign.Start,
-    line: Int = 1,
-    modifier: Modifier
+    line: Int = 1
 ) {
     Text(
         text = text,
