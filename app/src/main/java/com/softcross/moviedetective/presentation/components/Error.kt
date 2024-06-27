@@ -17,9 +17,9 @@ import androidx.compose.ui.unit.sp
 import com.softcross.moviedetective.R
 
 @Composable
-fun ErrorScreen(message: String) {
+fun ErrorScreen(message: String, modifier: Modifier = Modifier) {
     Column(
-        Modifier.height(200.dp),
+        modifier.height(200.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

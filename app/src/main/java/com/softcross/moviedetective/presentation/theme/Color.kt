@@ -17,3 +17,6 @@ val Black = Color(0xFF000000)
 val BlackGray = Color(0xFF292929)
 
 val NavyBlue = Color(0xFF215694)
+
+val OrangeDark = Color(0xFFE2703A)
+val Yellow = Color(0xFFFFD369)

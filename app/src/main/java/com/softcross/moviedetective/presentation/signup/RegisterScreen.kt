@@ -37,14 +37,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.softcross.moviedetective.R
 import com.softcross.moviedetective.common.CurrentUser
 import com.softcross.moviedetective.common.extensions.clickableWithoutIndicator
+import com.softcross.moviedetective.common.extensions.emailRegex
+import com.softcross.moviedetective.common.extensions.nameSurnameRegex
+import com.softcross.moviedetective.common.extensions.passwordRegex
 import com.softcross.moviedetective.presentation.components.CustomPasswordTextField
 import com.softcross.moviedetective.presentation.components.CustomSnackbar
 import com.softcross.moviedetective.presentation.components.CustomText
 import com.softcross.moviedetective.presentation.components.CustomTextField
 import com.softcross.moviedetective.presentation.components.LoadingTextButton
-import com.softcross.moviedetective.core.common.extensions.emailRegex
-import com.softcross.moviedetective.core.common.extensions.nameSurnameRegex
-import com.softcross.moviedetective.core.common.extensions.passwordRegex
 
 
 @Composable

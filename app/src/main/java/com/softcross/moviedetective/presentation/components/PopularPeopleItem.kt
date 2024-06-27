@@ -3,6 +3,7 @@ package com.softcross.moviedetective.presentation.components
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -34,13 +35,15 @@ fun PopularPeopleItem(people: Actor) {
         CustomAsyncImage(
             model = people.image,
             contentDescription = people.name,
-            alignment = Alignment.CenterStart,
+            alignment = Alignment.Center,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .padding(8.dp)
                 .shadow(elevation = 8.dp, MaterialTheme.shapes.small)
                 .clip(MaterialTheme.shapes.small)
                 .height(212.dp)
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surfaceVariant)
         )
         CustomText(
             text = people.name,

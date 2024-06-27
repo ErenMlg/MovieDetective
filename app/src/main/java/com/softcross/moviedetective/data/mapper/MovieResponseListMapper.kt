@@ -7,16 +7,35 @@ import javax.inject.Inject
 
 class MovieResponseListMapper @Inject constructor(): MovieDetectiveListMapper<MovieDto, Movie> {
     override fun map(input: List<MovieDto>): List<Movie> {
-        return input.map {
+       return input.map { movie ->
             Movie(
-                movieID = it.id,
-                movieName = it.title,
-                description = it.overview,
-                genres = it.genresID,
-                imdb = it.voteAverage,
-                releaseDate = it.releaseDate,
-                movieImage = it.image ?: ""
+                movieID = movie.id,
+                movieName = movie.title,
+                description = movie.overview,
+                genres = movie.genresID,
+                imdb = movie.voteAverage,
+                releaseDate = movie.releaseDate,
+                movieImage = movie.image ?: ""
             )
         }
     }
 }
+
+/*
+{
+        val movieList = mutableListOf<Movie>()
+        input.forEach { movie ->
+            val mappedMovie = Movie(
+                movieID = movie.id,
+                movieName = movie.title,
+                description = movie.overview,
+                genres = movie.genresID,
+                imdb = movie.voteAverage,
+                releaseDate = movie.releaseDate,
+                movieImage = movie.image ?: ""
+            )
+            if (!movieList.contains(mappedMovie)) movieList.add(mappedMovie)
+        }
+        return movieList
+    }
+ */

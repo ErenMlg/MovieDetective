@@ -1,4 +1,4 @@
-package com.softcross.moviedetective.core.common.extensions
+package com.softcross.moviedetective.common.extensions
 
 
 import androidx.compose.animation.core.animateFloat
@@ -6,6 +6,9 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,6 +20,14 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
+
+@Composable
+fun Modifier.clickableWithoutIndicator(onClick: () -> Unit): Modifier = this then clickable(
+    indication = null,
+    interactionSource = remember { MutableInteractionSource() },
+) {
+    onClick()
+}
 
 fun Modifier.shimmerBackground(): Modifier = composed {
     var size by remember {
@@ -48,3 +59,5 @@ fun Modifier.shimmerBackground(): Modifier = composed {
             size = it.size
         }
 }
+
+

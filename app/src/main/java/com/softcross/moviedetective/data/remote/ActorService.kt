@@ -15,4 +15,5 @@ interface ActorService {
     @GET("person/popular?api_key=${BuildConfig.API_KEY}")
     suspend fun getPopularActors(@Query("page") page: Int = 1): ActorResponse
 
+
 }

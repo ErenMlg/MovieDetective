@@ -1,4 +1,4 @@
-package com.softcross.moviedetective.core.common.extensions
+package com.softcross.moviedetective.common.extensions
 
 import com.softcross.moviedetective.core.common.NetworkResponseState
 

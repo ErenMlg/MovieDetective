@@ -46,9 +46,8 @@ import com.softcross.moviedetective.R
 import com.softcross.moviedetective.common.CurrentUser
 import com.softcross.moviedetective.common.GenreList
 import com.softcross.moviedetective.common.extensions.clickableWithoutIndicator
-import com.softcross.moviedetective.common.extensions.listToString
+import com.softcross.moviedetective.common.extensions.startOffsetForPage
 import com.softcross.moviedetective.core.common.ScreenState
-import com.softcross.moviedetective.core.common.extensions.startOffsetForPage
 import com.softcross.moviedetective.domain.model.Actor
 import com.softcross.moviedetective.domain.model.Movie
 import com.softcross.moviedetective.presentation.components.ComingContentItem
@@ -73,7 +72,7 @@ fun HomeScreen(
     onComingMovies: () -> Unit,
     onDiscoverMovies: (List<Int>) -> Unit,
     onPopularPeoples: () -> Unit,
-    onMovieClick: (String) -> Unit
+    onMovieClick: (Int) -> Unit
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
@@ -138,7 +137,11 @@ fun HomeScreen(
                 { onTrendMovies() }
             }
         )
-        TrendMoviesContent(trendMovieState, onMovieClick)
+        TrendMoviesContent(trendMovieState, remember {
+            {
+                onMovieClick(it)
+            }
+        })
         ContentTitleField(
             title = "Discover",
             subTitle = "Explore movies and with category",
@@ -223,7 +226,7 @@ fun PopularContent(state: ScreenState<List<Movie>>) {
 }
 
 @Composable
-fun TrendMoviesContent(state: ScreenState<List<Movie>>, onClick: (String) -> Unit) {
+fun TrendMoviesContent(state: ScreenState<List<Movie>>, onClick: (Int) -> Unit) {
     when (state) {
         is ScreenState.Error -> ErrorScreen(message = state.message)
 
@@ -428,3 +431,4 @@ fun ContentTitleField(title: String, subTitle: String, onClick: () -> Unit) {
         )
     }
 }
+

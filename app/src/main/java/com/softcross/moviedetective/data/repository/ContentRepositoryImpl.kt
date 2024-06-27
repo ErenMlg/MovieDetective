@@ -2,8 +2,8 @@ package com.softcross.moviedetective.data.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import com.softcross.moviedetective.common.extensions.mapResponse
 import com.softcross.moviedetective.core.common.NetworkResponseState
-import com.softcross.moviedetective.core.common.extensions.mapResponse
 import com.softcross.moviedetective.data.dto.actors.ActorDto
 import com.softcross.moviedetective.data.dto.genre.GenreDto
 import com.softcross.moviedetective.data.dto.movieDetail.MovieDetailDto
@@ -19,7 +19,6 @@ import com.softcross.moviedetective.domain.model.Genre
 import com.softcross.moviedetective.domain.model.Movie
 import com.softcross.moviedetective.domain.model.MovieDetail
 import com.softcross.moviedetective.domain.model.Review
-import com.softcross.moviedetective.domain.model.ReviewAuthor
 import com.softcross.moviedetective.domain.model.Video
 import com.softcross.moviedetective.domain.repository.ContentRepository
 import kotlinx.coroutines.flow.Flow
@@ -103,6 +102,11 @@ class ContentRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override fun getActorMovies(actorID: Int): Flow<NetworkResponseState<List<Movie>>> =
+        remoteDataSource.getActorMovies(actorID).map {
+            it.mapResponse { movieResponseListMapper.map(data) }
+        }
 
     override fun getMovieGenres(): Flow<NetworkResponseState<List<Genre>>> =
         remoteDataSource.getMovieGenres().map {

@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.softcross.moviedetective.R
-import com.softcross.moviedetective.core.common.extensions.shimmerBackground
+import com.softcross.moviedetective.common.extensions.shimmerBackground
 
 @Composable
 fun LoadingHeaderContentItem(modifier: Modifier = Modifier) {
@@ -121,6 +121,7 @@ fun LoadingContentItems() {
         Box(
             modifier = Modifier
                 .padding(8.dp)
+                .shadow(elevation = 8.dp, MaterialTheme.shapes.small)
                 .clip(MaterialTheme.shapes.small)
                 .fillMaxWidth()
                 .height(212.dp)
@@ -132,7 +133,7 @@ fun LoadingContentItems() {
             textAlign = TextAlign.Start,
             fontSize = 14.sp,
             modifier = Modifier
-                .padding(top = 8.dp, start = 16.dp, end = 16.dp).fillMaxWidth()
+                .padding(top = 8.dp, start = 12.dp, end = 16.dp).fillMaxWidth()
                 .shimmerBackground()
         )
         Spacer(modifier = Modifier.size(16.dp))

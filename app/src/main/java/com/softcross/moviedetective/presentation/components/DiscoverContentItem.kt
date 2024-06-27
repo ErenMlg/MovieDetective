@@ -44,13 +44,16 @@ fun DiscoverContentItem(movie: Movie) {
         CustomAsyncImage(
             model = movie.movieImage,
             contentDescription = movie.movieName,
-            alignment = Alignment.CenterStart,
+            alignment = Alignment.Center,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .padding(8.dp)
                 .shadow(elevation = 8.dp, MaterialTheme.shapes.small)
                 .clip(MaterialTheme.shapes.small)
                 .height(212.dp)
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .background(MaterialTheme.colorScheme.surfaceVariant)
         )
         CustomText(
             text = movie.movieName,

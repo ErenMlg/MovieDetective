@@ -29,7 +29,7 @@ object MovieDetail : Destination {
     val routeWithArgs = "${MovieDetail.route}/{$idArg}"
     val arguments = listOf(
         navArgument(idArg) {
-            type = NavType.StringType
+            type = NavType.IntType
         }
     )
 }

@@ -41,6 +41,9 @@ interface RemoteDataSource {
     //Movies Genres
     fun getMovieGenres(): Flow<NetworkResponseState<GenreResponse>>
 
+    //Actor Movies
+    fun getActorMovies(actorID: Int): Flow<NetworkResponseState<MoviesResponse>>
+
     //Popular Actors
     fun getPopularActors(): Flow<NetworkResponseState<ActorResponse>>
     fun getPopularActorsByPage(): RemoteActorMediator

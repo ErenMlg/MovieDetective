@@ -104,7 +104,7 @@ fun PopularContentItem(movie: Movie, modifier: Modifier) {
         CustomAsyncImage(
             model = movie.movieImage,
             contentDescription = "",
-            alignment = Alignment.CenterStart,
+            alignment = Alignment.Center,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .height(256.dp)
@@ -112,6 +112,7 @@ fun PopularContentItem(movie: Movie, modifier: Modifier) {
                 .padding(16.dp)
                 .shadow(elevation = 8.dp, MaterialTheme.shapes.small)
                 .clip(MaterialTheme.shapes.small)
+                .background(MaterialTheme.colorScheme.surfaceVariant)
         )
     }
 }

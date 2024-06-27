@@ -122,6 +122,20 @@ class RemoteDataSourceImpl @Inject constructor(
         }
     }
 
+    override fun getActorMovies(actorID: Int): Flow<NetworkResponseState<MoviesResponse>> {
+        return flow {
+            emit(NetworkResponseState.Loading)
+            try {
+                println(actorID)
+                val response = movieService.getActorMovies(actorID)
+                println(response)
+                emit(NetworkResponseState.Success(response))
+            } catch (e: Exception) {
+                emit(NetworkResponseState.Error(e))
+            }
+        }
+    }
+
     //Actors
     override fun getPopularActors(): Flow<NetworkResponseState<ActorResponse>> {
         return flow {

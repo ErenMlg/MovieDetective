@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -47,6 +48,8 @@ fun ComingContentItem(movie: Movie) {
                     .shadow(elevation = 8.dp, MaterialTheme.shapes.small)
                     .clip(MaterialTheme.shapes.small)
                     .height(212.dp)
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
             )
             Card(modifier = Modifier.padding(16.dp)) {
                 val remainingDays = calculateRemainingDays(movie.releaseDate).toInt()

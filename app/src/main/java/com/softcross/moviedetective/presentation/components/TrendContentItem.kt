@@ -32,11 +32,11 @@ import com.softcross.moviedetective.domain.model.Movie
 
 
 @Composable
-fun TrendContentItem(movie: Movie, onClick: (String) -> Unit) {
+fun TrendContentItem(movie: Movie, onClick: (Int) -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .clickableWithoutIndicator { onClick(movie.movieID.toString()) }
+            .clickableWithoutIndicator { onClick(movie.movieID) }
             .padding(8.dp)
             .shadow(8.dp, MaterialTheme.shapes.small)
             .clip(MaterialTheme.shapes.small)
@@ -52,7 +52,9 @@ fun TrendContentItem(movie: Movie, onClick: (String) -> Unit) {
                 .padding(8.dp)
                 .shadow(elevation = 8.dp, MaterialTheme.shapes.small)
                 .clip(MaterialTheme.shapes.small)
+                .fillMaxWidth()
                 .height(212.dp)
+                .background(MaterialTheme.colorScheme.surfaceVariant)
         )
         CustomText(
             text = movie.movieName,

@@ -36,6 +36,7 @@ android {
         buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
         buildConfigField("String", "MOVIE_BASE_URL", "\"https://api.themoviedb.org/3/\"")
         buildConfigField("String", "POSTER_BASE_PATH", "\"https://image.tmdb.org/t/p/original\"")
+        buildConfigField("String", "VIDEO_BASE_PATH", "\"https://img.youtube.com/vi/\"")
 
 
     }
@@ -113,7 +114,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-
+    //ExoPlayer
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
     //Firebase
     implementation(libs.firebase.auth)
     //Hilt
@@ -124,6 +127,7 @@ dependencies {
     implementation(libs.com.airbnb.android.lottie)
     //Coil
     implementation(libs.coil.kt.compose)
+    implementation(libs.coil.video)
     //Retrofit
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.gson)
