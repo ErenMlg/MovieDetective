@@ -1,30 +1,36 @@
 package com.softcross.moviedetective.data.source.remote
 
 import com.softcross.moviedetective.core.common.NetworkResponseState
+import com.softcross.moviedetective.data.dto.ActorDetailDto
 import com.softcross.moviedetective.data.dto.movieDetail.MovieDetailDto
 import com.softcross.moviedetective.data.dto.actors.ActorResponse
+import com.softcross.moviedetective.data.dto.actors.images.ActorImagesResponse
 import com.softcross.moviedetective.data.dto.genre.GenreResponse
-import com.softcross.moviedetective.data.dto.movieDetail.credit.MovieCreditResponse
-import com.softcross.moviedetective.data.dto.movieDetail.images.MovieImagesResponse
-import com.softcross.moviedetective.data.dto.movieDetail.reviews.MovieReviewResponse
-import com.softcross.moviedetective.data.dto.movieDetail.video.MovieVideoResponse
+import com.softcross.moviedetective.data.dto.credit.CreditResponse
+import com.softcross.moviedetective.data.dto.images.ImagesResponse
+import com.softcross.moviedetective.data.dto.reviews.ReviewResponse
+import com.softcross.moviedetective.data.dto.video.VideoResponse
 import com.softcross.moviedetective.data.dto.movies.MoviesResponse
+import com.softcross.moviedetective.data.dto.series.SeriesDetailDto
+import com.softcross.moviedetective.data.dto.series.SeriesResponse
 import com.softcross.moviedetective.data.remote.ActorService
 import com.softcross.moviedetective.data.remote.MovieService
+import com.softcross.moviedetective.data.remote.SeriesService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class RemoteDataSourceImpl @Inject constructor(
     private val movieService: MovieService,
-    private val actorService: ActorService
+    private val actorService: ActorService,
+    private val seriesService: SeriesService
 ) : RemoteDataSource {
 
-    override fun getPopularMovies(page: Int): Flow<NetworkResponseState<MoviesResponse>> {
+    override fun getPopularMovies(): Flow<NetworkResponseState<MoviesResponse>> {
         return flow {
             emit(NetworkResponseState.Loading)
             try {
-                val response = movieService.getPopularMovies(page)
+                val response = movieService.getPopularMovies()
                 emit(NetworkResponseState.Success(response))
             } catch (e: Exception) {
                 emit(NetworkResponseState.Error(e))
@@ -33,7 +39,7 @@ class RemoteDataSourceImpl @Inject constructor(
     }
 
     override fun getPopularMoviesWithPaging(): RemoteMovieMediator = RemoteMovieMediator(
-        RequestType.POPULAR,
+        RemoteMovieMediatorRequestType.POPULAR,
         movieService
     )
 
@@ -51,7 +57,7 @@ class RemoteDataSourceImpl @Inject constructor(
     }
 
     override fun getTrendMoviesByPage(): RemoteMovieMediator = RemoteMovieMediator(
-        RequestType.TREND,
+        RemoteMovieMediatorRequestType.TREND,
         movieService
     )
 
@@ -68,7 +74,7 @@ class RemoteDataSourceImpl @Inject constructor(
     }
 
     override fun getComingMoviesByPage(): RemoteMovieMediator = RemoteMovieMediator(
-        RequestType.COMING_SOON,
+        RemoteMovieMediatorRequestType.COMING_SOON,
         movieService
     )
 
@@ -86,27 +92,27 @@ class RemoteDataSourceImpl @Inject constructor(
 
     override fun getMoviesByGenreByPage(genreList: String): RemoteMovieMediator =
         RemoteMovieMediator(
-            RequestType.GENRE(genreList),
+            RemoteMovieMediatorRequestType.GENRE(genreList),
             movieService
         )
 
     override suspend fun getSingleMovie(movieID: Int): MovieDetailDto =
         movieService.getSingleMovie(movieID)
 
-    override suspend fun getMovieVideos(movieID: Int): MovieVideoResponse =
+    override suspend fun getSingleMovieVideos(movieID: Int): VideoResponse =
         movieService.getMovieVideos(movieID)
 
-    override suspend fun getMovieCredits(movieID: Int): MovieCreditResponse =
+    override suspend fun getSingleMovieCredits(movieID: Int): CreditResponse =
         movieService.getMovieCredits(movieID)
 
-    override suspend fun getMovieImages(movieID: Int): MovieImagesResponse =
+    override suspend fun getSingleMovieImages(movieID: Int): ImagesResponse =
         movieService.getMovieImages(movieID)
 
-    override suspend fun getMovieReviews(movieID: Int): MovieReviewResponse =
+    override suspend fun getSingleMovieReviews(movieID: Int): ReviewResponse =
         movieService.getMovieReviews(movieID)
 
 
-    override suspend fun getMovieSimilar(movieID: Int): MoviesResponse =
+    override suspend fun getSingleMovieSimilar(movieID: Int): MoviesResponse =
         movieService.getMovieSimilar(movieID)
 
 
@@ -122,13 +128,35 @@ class RemoteDataSourceImpl @Inject constructor(
         }
     }
 
+    override fun getSeriesGenres(): Flow<NetworkResponseState<GenreResponse>> {
+        return flow {
+            emit(NetworkResponseState.Loading)
+            try {
+                val response = seriesService.getSeriesGenres()
+                emit(NetworkResponseState.Success(response))
+            } catch (e: Exception) {
+                emit(NetworkResponseState.Error(e))
+            }
+        }
+    }
+
     override fun getActorMovies(actorID: Int): Flow<NetworkResponseState<MoviesResponse>> {
         return flow {
             emit(NetworkResponseState.Loading)
             try {
-                println(actorID)
-                val response = movieService.getActorMovies(actorID)
-                println(response)
+                val response = actorService.getActorMovies(actorID)
+                emit(NetworkResponseState.Success(response))
+            } catch (e: Exception) {
+                emit(NetworkResponseState.Error(e))
+            }
+        }
+    }
+
+    override fun getActorSeries(actorID: Int): Flow<NetworkResponseState<SeriesResponse>> {
+        return flow {
+            emit(NetworkResponseState.Loading)
+            try {
+                val response = actorService.getActorSeries(actorID)
                 emit(NetworkResponseState.Success(response))
             } catch (e: Exception) {
                 emit(NetworkResponseState.Error(e))
@@ -153,4 +181,93 @@ class RemoteDataSourceImpl @Inject constructor(
         actorService
     )
 
+    override suspend fun getSingleActorImages(actorID: Int): ActorImagesResponse =
+        actorService.getActorImages(actorID)
+
+    override suspend fun getSingleActor(actorID: Int): ActorDetailDto =
+        actorService.getActorDetail(actorID)
+
+    override suspend fun getSingleActorSeries(actorID: Int): SeriesResponse =
+        actorService.getActorSeries(actorID)
+
+    override suspend fun getSingleActorMovies(actorID: Int): MoviesResponse =
+        actorService.getActorMovies(actorID)
+
+    override fun getPopularSeries(): Flow<NetworkResponseState<SeriesResponse>> {
+        return flow {
+            emit(NetworkResponseState.Loading)
+            try {
+                val response = seriesService.getPopularSeries()
+                emit(NetworkResponseState.Success(response))
+            } catch (e: Exception) {
+                emit(NetworkResponseState.Error(e))
+            }
+        }
+    }
+
+    override fun getAiringSeries(): Flow<NetworkResponseState<SeriesResponse>> {
+        return flow {
+            emit(NetworkResponseState.Loading)
+            try {
+                val response = seriesService.getAiringSeries()
+                emit(NetworkResponseState.Success(response))
+            } catch (e: Exception) {
+                emit(NetworkResponseState.Error(e))
+            }
+        }
+    }
+
+    override fun getComingSeries(): Flow<NetworkResponseState<SeriesResponse>> {
+        return flow {
+            emit(NetworkResponseState.Loading)
+            try {
+                val response = seriesService.getComingSeries()
+                emit(NetworkResponseState.Success(response))
+            } catch (e: Exception) {
+                emit(NetworkResponseState.Error(e))
+            }
+        }
+    }
+
+    override fun getTopSeries(): Flow<NetworkResponseState<SeriesResponse>> {
+        return flow {
+            emit(NetworkResponseState.Loading)
+            try {
+                val response = seriesService.getTopSeries()
+                emit(NetworkResponseState.Success(response))
+            } catch (e: Exception) {
+                emit(NetworkResponseState.Error(e))
+            }
+        }
+    }
+
+    override fun getSeriesByGenre(genres: String): Flow<NetworkResponseState<SeriesResponse>> {
+        return flow {
+            emit(NetworkResponseState.Loading)
+            try {
+                val response = seriesService.getSeriesByGenre(genres)
+                emit(NetworkResponseState.Success(response))
+            } catch (e: Exception) {
+                emit(NetworkResponseState.Error(e))
+            }
+        }
+    }
+
+    override suspend fun getSingleSeries(movieID: Int): SeriesDetailDto =
+        seriesService.getSingleSeries(movieID)
+
+    override suspend fun getSingleSeriesVideos(movieID: Int): VideoResponse =
+        seriesService.getSeriesVideos(movieID)
+
+    override suspend fun getSingleSeriesCredits(movieID: Int): CreditResponse =
+        seriesService.getSeriesCast(movieID)
+
+    override suspend fun getSingleSeriesImages(movieID: Int): ImagesResponse =
+        seriesService.getSeriesImages(movieID)
+
+    override suspend fun getSingleSeriesReviews(movieID: Int): ReviewResponse =
+        seriesService.getSeriesReviews(movieID)
+
+    override suspend fun getSingleSeriesSimilar(movieID: Int): SeriesResponse =
+        seriesService.getSimilarSeries(movieID)
 }

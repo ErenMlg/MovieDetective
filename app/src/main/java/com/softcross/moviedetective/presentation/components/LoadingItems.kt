@@ -4,13 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,12 +18,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.softcross.moviedetective.R
 import com.softcross.moviedetective.common.extensions.shimmerBackground
+
+@Composable
+fun LoadingLazyRow(){
+    LazyRow(Modifier.padding(8.dp)) {
+        items(3) {
+            LoadingContentItem()
+        }
+    }
+}
 
 @Composable
 fun LoadingHeaderContentItem(modifier: Modifier = Modifier) {
@@ -45,42 +54,20 @@ fun LoadingHeaderContentItem(modifier: Modifier = Modifier) {
                 .padding(start = 32.dp),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "",
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 16.dp, start = 16.dp, top = 8.dp)
-                        .shimmerBackground()
-                )
-                Box(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .align(alignment = Alignment.CenterVertically)
-                        .padding(end = 8.dp, top = 8.dp)
-                        .shimmerBackground()
-                )
-                Text(
-                    text = "",
-                    modifier = Modifier
-                        .weight(0.15f)
-                        .padding(end = 8.dp, top = 8.dp)
-                        .shimmerBackground()
-                )
-            }
-            Box(
-                Modifier
-                    .width(125.dp)
-                    .padding(start = 16.dp)
+            Text(
+                text = "",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 16.dp, start = 16.dp, top = 8.dp)
                     .shimmerBackground()
-            ) {
-                Text(
-                    text = "",
-                    modifier = Modifier.padding(horizontal = 8.dp)
-                )
-            }
+            )
+            Text(
+                text = "",
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .width(125.dp)
+                    .shimmerBackground()
+            )
             Text(
                 text = "",
                 modifier = Modifier
@@ -108,7 +95,7 @@ fun LoadingHeaderContentItem(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun LoadingContentItems() {
+fun LoadingContentItem() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -123,8 +110,9 @@ fun LoadingContentItems() {
                 .padding(8.dp)
                 .shadow(elevation = 8.dp, MaterialTheme.shapes.small)
                 .clip(MaterialTheme.shapes.small)
-                .fillMaxWidth()
                 .height(212.dp)
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surfaceVariant)
                 .shimmerBackground()
         )
         CustomText(
@@ -133,41 +121,30 @@ fun LoadingContentItems() {
             textAlign = TextAlign.Start,
             fontSize = 14.sp,
             modifier = Modifier
-                .padding(top = 8.dp, start = 12.dp, end = 16.dp).fillMaxWidth()
+                .padding(start = 12.dp, end = 12.dp)
+                .fillMaxWidth()
                 .shimmerBackground()
         )
         Spacer(modifier = Modifier.size(16.dp))
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
+        CustomText(
+            text = "",
+            fontFamilyID = R.font.poppins_medium,
+            textAlign = TextAlign.Start,
+            fontSize = 14.sp,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp, start = 16.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(24.dp)
-                    .align(alignment = Alignment.CenterVertically)
-                    .padding(end = 8.dp, top = 8.dp)
-                    .shimmerBackground()
-            )
-            CustomText(
-                text = "",
-                fontFamilyID = R.font.poppins_semi_bold,
-                modifier = Modifier
-                    .weight(0.3f)
-                    .padding(start = 4.dp, end = 4.dp)
-                    .shimmerBackground()
-            )
-            CustomText(
-                text = "",
-                textAlign = TextAlign.End,
-                color = Color.Gray,
-                modifier = Modifier
-                    .weight(0.4f)
-                    .padding(end = 16.dp)
-                    .shimmerBackground()
-            )
-        }
+                .padding(start = 12.dp, end = 12.dp)
+                .shimmerBackground()
+        )
+        Spacer(modifier = Modifier.size(8.dp))
+    }
+}
+
+@Preview
+@Composable
+fun LoadingHeaderContentItemPreview() {
+    MaterialTheme {
+        LoadingHeaderContentItem()
     }
 }
 

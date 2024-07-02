@@ -16,8 +16,8 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.softcross.moviedetective.R
 import com.softcross.moviedetective.presentation.components.CustomText
-import com.softcross.moviedetective.presentation.components.LoadingContentItems
-import com.softcross.moviedetective.presentation.components.PopularPeopleItem
+import com.softcross.moviedetective.presentation.components.LoadingContentItem
+import com.softcross.moviedetective.presentation.components.ActorItem
 
 
 @Composable
@@ -44,14 +44,15 @@ fun PopularPeoplesScreen(
             )
         }
         if (actor.loadState.refresh is LoadState.Loading) {
-            items(2) {
-                LoadingContentItems()
+            items(6) {
+                LoadingContentItem()
             }
         } else {
             items(actor.itemCount) {
                 actor[it]?.let { actor ->
-                    PopularPeopleItem(
-                        people = actor
+                    ActorItem(
+                        people = actor,
+                        onClick = {}
                     )
                 }
             }

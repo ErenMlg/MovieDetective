@@ -25,34 +25,34 @@ object Home : Destination {
 
 object MovieDetail : Destination {
     override val route: String = "movieDetail"
-    val idArg = "id"
-    val routeWithArgs = "${MovieDetail.route}/{$idArg}"
+    val routeWithArgs = "${route}/{$ARGS_ID}"
     val arguments = listOf(
-        navArgument(idArg) {
+        navArgument(ARGS_ID) {
             type = NavType.IntType
         }
     )
 }
 
-object PopularMovies : Destination {
-    override val route: String = "popularMovies"
-}
-
-object TrendMovies : Destination {
-    override val route: String = "trendMovies"
-}
-
-object ComingMovies : Destination {
-    override val route: String = "comingMovies"
-}
-
-object DiscoverMovies : Destination {
-    override val route: String = "discoverMovies"
-    val genresArg = "genres"
-    val routeWithArgs = "$route/{$genresArg}"
+object ActorDetail : Destination {
+    override val route: String = "actorDetail"
+    val routeWithArgs = "${route}/{$ARGS_ID}"
     val arguments = listOf(
-        navArgument(genresArg) {
+        navArgument(ARGS_ID) {
+            type = NavType.IntType
+        }
+    )
+}
+
+object MoreMovie : Destination {
+    override val route: String = "moreMovie"
+    val routeWithArgs = "${route}/{$ARGS_ID}/{$ARGS_GENRE}"
+    val arguments = listOf(
+        navArgument(ARGS_ID) {
+            type = NavType.IntType
+        },
+        navArgument(ARGS_GENRE) {
             type = NavType.StringType
+            nullable = true
         }
     )
 }
@@ -61,3 +61,20 @@ object PopularPeoples : Destination {
     override val route: String = "popularPeoples"
 }
 
+object Series : Destination {
+    override val route: String = "series"
+}
+
+object SeriesDetail : Destination {
+    override val route: String = "seriesDetail"
+    val routeWithArgs = "${route}/{$ARGS_ID}"
+    val arguments = listOf(
+        navArgument(ARGS_ID) {
+            type = NavType.IntType
+        }
+    )
+}
+
+
+const val ARGS_ID = "id"
+const val ARGS_GENRE = "genre"

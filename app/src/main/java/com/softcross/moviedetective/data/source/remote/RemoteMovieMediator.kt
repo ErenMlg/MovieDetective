@@ -6,32 +6,31 @@ import com.softcross.moviedetective.data.dto.movies.MovieDto
 import com.softcross.moviedetective.data.mapper.MovieResponseListMapper
 import com.softcross.moviedetective.data.remote.MovieService
 import com.softcross.moviedetective.domain.mapper.MovieDetectiveListMapper
-import com.softcross.moviedetective.domain.model.Movie
-import javax.inject.Inject
+import com.softcross.moviedetective.domain.model.Content
 
 
 class RemoteMovieMediator(
-    private val requestType: RequestType,
+    private val requestType: RemoteMovieMediatorRequestType,
     private val movieService: MovieService,
-    private val movieMapper: MovieDetectiveListMapper<MovieDto, Movie> = MovieResponseListMapper(),
-) : PagingSource<Int, Movie>() {
+    private val movieMapper: MovieDetectiveListMapper<MovieDto, Content> = MovieResponseListMapper(),
+) : PagingSource<Int, Content>() {
 
 
-    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Content>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Content> {
         return try {
             val page = params.key ?: 1
             val response = when (requestType) {
-                is RequestType.POPULAR -> movieService.getPopularMovies(page).data
-                is RequestType.TREND -> movieService.getTrendMovies(page).data
-                is RequestType.COMING_SOON -> movieService.getComingSoonMovies(page).data
-                is RequestType.GENRE -> movieService.getMovieByGenre(requestType.genres, page).data
+                is RemoteMovieMediatorRequestType.POPULAR -> movieService.getPopularMovies(page).data
+                is RemoteMovieMediatorRequestType.TREND -> movieService.getTrendMovies(page).data
+                is RemoteMovieMediatorRequestType.COMING_SOON -> movieService.getComingSoonMovies(page).data
+                is RemoteMovieMediatorRequestType.GENRE -> movieService.getMovieByGenre(requestType.genres, page).data
             }
             val mappedResponse = movieMapper.map(response)
 
@@ -46,9 +45,9 @@ class RemoteMovieMediator(
     }
 }
 
-sealed class RequestType {
-    data object POPULAR : RequestType()
-    data object TREND : RequestType()
-    data object COMING_SOON : RequestType()
-    data class GENRE(val genres: String) : RequestType()
+sealed class RemoteMovieMediatorRequestType {
+    data object POPULAR : RemoteMovieMediatorRequestType()
+    data object TREND : RemoteMovieMediatorRequestType()
+    data object COMING_SOON : RemoteMovieMediatorRequestType()
+    data class GENRE(val genres: String) : RemoteMovieMediatorRequestType()
 }

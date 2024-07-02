@@ -6,9 +6,9 @@ import androidx.compose.runtime.Stable
 @Immutable
 @Stable
 data class MovieDetail(
-    val movie: Movie,
+    val movie: Content,
     val runtime: Int,
-    val similarMovies: List<Movie>,
+    val similarMovies: List<Content>,
     val reviews: List<Review>,
     val cast: List<Actor>,
     val backDropImages: List<String>,

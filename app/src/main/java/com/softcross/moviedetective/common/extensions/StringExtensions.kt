@@ -40,14 +40,18 @@ fun String.passwordRegex(): Boolean {
 }
 
 fun calculateRemainingDays(date: String): Long {
-    val remainDay = ChronoUnit.DAYS.between(
-        LocalDate.now(),
-        LocalDate.parse(date)
-    )
-    return if (remainDay < 0) {
-        0
-    } else {
-        remainDay
+    try {
+        val remainDay = ChronoUnit.DAYS.between(
+            LocalDate.now(),
+            LocalDate.parse(date)
+        )
+        return if (remainDay < 0) {
+            0
+        } else {
+            remainDay
+        }
+    }catch (e: Exception){
+        return -1
     }
 }
 

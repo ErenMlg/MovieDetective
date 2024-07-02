@@ -8,7 +8,7 @@ import com.softcross.moviedetective.common.extensions.listToString
 import com.softcross.moviedetective.core.common.NetworkResponseState
 import com.softcross.moviedetective.core.common.ScreenState
 import com.softcross.moviedetective.domain.model.Actor
-import com.softcross.moviedetective.domain.model.Movie
+import com.softcross.moviedetective.domain.model.Content
 import com.softcross.moviedetective.domain.repository.ContentRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -20,17 +20,17 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     //Top Movies State
-    private val _popularMovieState = mutableStateOf<ScreenState<List<Movie>>>(ScreenState.Loading)
-    val popularMovieState: State<ScreenState<List<Movie>>> get() = _popularMovieState
+    private val _popularMovieState = mutableStateOf<ScreenState<List<Content>>>(ScreenState.Loading)
+    val popularMovieState: State<ScreenState<List<Content>>> get() = _popularMovieState
 
     //Trend Movies State
-    private val _trendMovieState = mutableStateOf<ScreenState<List<Movie>>>(ScreenState.Loading)
-    val trendMovieState: State<ScreenState<List<Movie>>> get() = _trendMovieState
+    private val _trendMovieState = mutableStateOf<ScreenState<List<Content>>>(ScreenState.Loading)
+    val trendMovieState: State<ScreenState<List<Content>>> get() = _trendMovieState
 
     //Upcoming Movies State
     private val _upcomingMovieState =
-        mutableStateOf<ScreenState<List<Movie>>>(ScreenState.Loading)
-    val upcomingMovieState: State<ScreenState<List<Movie>>> get() = _upcomingMovieState
+        mutableStateOf<ScreenState<List<Content>>>(ScreenState.Loading)
+    val upcomingMovieState: State<ScreenState<List<Content>>> get() = _upcomingMovieState
 
     //Popular Peoples State
     private val _popularPeopleState =
@@ -39,8 +39,8 @@ class HomeViewModel @Inject constructor(
 
     //Discover Movies State
     private val _discoverMovieState =
-        mutableStateOf<ScreenState<List<Movie>>>(ScreenState.Loading)
-    val discoverMovieState: State<ScreenState<List<Movie>>> get() = _discoverMovieState
+        mutableStateOf<ScreenState<List<Content>>>(ScreenState.Loading)
+    val discoverMovieState: State<ScreenState<List<Content>>> get() = _discoverMovieState
 
     init {
         getTrendMovies()
@@ -103,7 +103,7 @@ class HomeViewModel @Inject constructor(
 
                     is NetworkResponseState.Success -> {
                         if (result.result.isEmpty()) {
-                            _discoverMovieState.value = ScreenState.Error("No Movie Found")
+                            _discoverMovieState.value = ScreenState.Error("No Content Found")
                         } else {
                             _discoverMovieState.value = ScreenState.Success(result.result)
                         }

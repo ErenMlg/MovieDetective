@@ -1,8 +1,6 @@
 package com.softcross.moviedetective.data.mapper
 
-import com.softcross.moviedetective.data.dto.movieDetail.reviews.MovieReviewResponse
-import com.softcross.moviedetective.data.dto.movieDetail.reviews.ReviewDto
-import com.softcross.moviedetective.domain.mapper.MovieDetectiveBaseMapper
+import com.softcross.moviedetective.data.dto.reviews.ReviewDto
 import com.softcross.moviedetective.domain.mapper.MovieDetectiveListMapper
 import com.softcross.moviedetective.domain.model.Review
 import com.softcross.moviedetective.domain.model.ReviewAuthor
@@ -22,6 +20,6 @@ class ReviewResponseMapper @Inject constructor() :
                 createdAt = it.created_at,
                 id = it.id
             )
-        }
+        }.toSet().toList()
     }
 }

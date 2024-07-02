@@ -22,9 +22,12 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
 
 @Composable
-fun Modifier.clickableWithoutIndicator(onClick: () -> Unit): Modifier = this then clickable(
+fun Modifier.clickableWithoutIndicator(
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    onClick: () -> Unit
+): Modifier = this then clickable(
     indication = null,
-    interactionSource = remember { MutableInteractionSource() },
+    interactionSource = interactionSource,
 ) {
     onClick()
 }

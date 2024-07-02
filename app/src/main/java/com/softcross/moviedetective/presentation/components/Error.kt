@@ -3,6 +3,7 @@ package com.softcross.moviedetective.presentation.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,7 +20,7 @@ import com.softcross.moviedetective.R
 @Composable
 fun ErrorScreen(message: String, modifier: Modifier = Modifier) {
     Column(
-        modifier.height(200.dp),
+        modifier.height(200.dp).fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

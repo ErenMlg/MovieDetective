@@ -88,6 +88,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.firebase.firestore)
     implementation(libs.androidx.monitor)
+    implementation(libs.androidx.material)
     implementation(libs.compose.nav)
 
     testImplementation(libs.junit)

@@ -3,10 +3,10 @@ package com.softcross.moviedetective.data.remote
 import com.softcross.moviedetective.BuildConfig
 import com.softcross.moviedetective.data.dto.movieDetail.MovieDetailDto
 import com.softcross.moviedetective.data.dto.genre.GenreResponse
-import com.softcross.moviedetective.data.dto.movieDetail.credit.MovieCreditResponse
-import com.softcross.moviedetective.data.dto.movieDetail.images.MovieImagesResponse
-import com.softcross.moviedetective.data.dto.movieDetail.reviews.MovieReviewResponse
-import com.softcross.moviedetective.data.dto.movieDetail.video.MovieVideoResponse
+import com.softcross.moviedetective.data.dto.credit.CreditResponse
+import com.softcross.moviedetective.data.dto.images.ImagesResponse
+import com.softcross.moviedetective.data.dto.reviews.ReviewResponse
+import com.softcross.moviedetective.data.dto.video.VideoResponse
 import com.softcross.moviedetective.data.dto.movies.MoviesResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -35,21 +35,18 @@ interface MovieService {
     suspend fun getMovieGenres(): GenreResponse
 
     @GET("movie/{movieID}/videos?api_key=${BuildConfig.API_KEY}&region=US")
-    suspend fun getMovieVideos(@Path("movieID") movieID: Int): MovieVideoResponse
+    suspend fun getMovieVideos(@Path("movieID") movieID: Int): VideoResponse
 
     @GET("movie/{movieID}/credits?api_key=${BuildConfig.API_KEY}&region=US")
-    suspend fun getMovieCredits(@Path("movieID") movieID: Int): MovieCreditResponse
+    suspend fun getMovieCredits(@Path("movieID") movieID: Int): CreditResponse
 
     @GET("movie/{movieID}/images?api_key=${BuildConfig.API_KEY}&region=US")
-    suspend fun getMovieImages(@Path("movieID") movieID: Int): MovieImagesResponse
+    suspend fun getMovieImages(@Path("movieID") movieID: Int): ImagesResponse
 
     @GET("movie/{movieID}/reviews?api_key=${BuildConfig.API_KEY}&region=US")
-    suspend fun getMovieReviews(@Path("movieID") movieID: Int): MovieReviewResponse
+    suspend fun getMovieReviews(@Path("movieID") movieID: Int): ReviewResponse
 
     @GET("movie/{movieID}/similar?api_key=${BuildConfig.API_KEY}&region=US")
     suspend fun getMovieSimilar(@Path("movieID") movieID: Int): MoviesResponse
-
-    @GET("person/{actorID}/movie_credits?api_key=${BuildConfig.API_KEY}&region=US")
-    suspend fun getActorMovies(@Path("actorID") actorID: Int): MoviesResponse
 
 }

@@ -15,6 +15,6 @@ data class ActorDetailDto(
     val birthday: String,
     @SerializedName("biography")
     val biography: String,
-    @SerializedName("also_known_as")
-    val knownNames: List<String>
+    @SerializedName("place_of_birth")
+    val placeOfBirth: String,
 )

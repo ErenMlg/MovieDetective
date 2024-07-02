@@ -1,25 +1,32 @@
 package com.softcross.moviedetective.di
 
+import com.softcross.moviedetective.data.dto.ImageDto
 import com.softcross.moviedetective.data.dto.actors.ActorDto
 import com.softcross.moviedetective.data.dto.genre.GenreDto
 import com.softcross.moviedetective.data.dto.movieDetail.MovieDetailDto
-import com.softcross.moviedetective.data.dto.movieDetail.images.ImageDto
-import com.softcross.moviedetective.data.dto.movieDetail.reviews.ReviewDto
-import com.softcross.moviedetective.data.dto.movieDetail.video.MovieVideoDto
+import com.softcross.moviedetective.data.dto.reviews.ReviewDto
+import com.softcross.moviedetective.data.dto.video.VideoDto
 import com.softcross.moviedetective.data.dto.movies.MovieDto
+import com.softcross.moviedetective.data.dto.series.SeasonDto
+import com.softcross.moviedetective.data.dto.series.SeriesDetailDto
+import com.softcross.moviedetective.data.dto.series.SeriesDto
 import com.softcross.moviedetective.data.mapper.ActorResponseListMapper
 import com.softcross.moviedetective.data.mapper.GenreResponseListMapper
 import com.softcross.moviedetective.data.mapper.ImageResponseMapper
 import com.softcross.moviedetective.data.mapper.MovieDetailResponseMapper
 import com.softcross.moviedetective.data.mapper.MovieResponseListMapper
 import com.softcross.moviedetective.data.mapper.ReviewResponseMapper
+import com.softcross.moviedetective.data.mapper.SeasonResponseListMapper
+import com.softcross.moviedetective.data.mapper.SeriesDetailResponseMapper
+import com.softcross.moviedetective.data.mapper.SeriesResponseListMapper
 import com.softcross.moviedetective.data.mapper.VideoResponseMapper
 import com.softcross.moviedetective.domain.mapper.MovieDetectiveBaseMapper
 import com.softcross.moviedetective.domain.mapper.MovieDetectiveListMapper
 import com.softcross.moviedetective.domain.model.Actor
+import com.softcross.moviedetective.domain.model.Content
 import com.softcross.moviedetective.domain.model.Genre
-import com.softcross.moviedetective.domain.model.Movie
 import com.softcross.moviedetective.domain.model.Review
+import com.softcross.moviedetective.domain.model.Season
 import com.softcross.moviedetective.domain.model.Video
 import dagger.Binds
 import dagger.Module
@@ -38,7 +45,7 @@ abstract class MapperModule {
 
     @Binds
     @ViewModelScoped
-    abstract fun bindMovieResponseMapper(movieResponseListMapper: MovieResponseListMapper): MovieDetectiveListMapper<MovieDto, Movie>
+    abstract fun bindMovieResponseMapper(movieResponseListMapper: MovieResponseListMapper): MovieDetectiveListMapper<MovieDto, Content>
 
 
     @Binds
@@ -51,7 +58,7 @@ abstract class MapperModule {
 
     @Binds
     @ViewModelScoped
-    abstract fun bindMovieDetailResponseMapper(movieDetailResponseMapper: MovieDetailResponseMapper): MovieDetectiveBaseMapper<MovieDetailDto, Movie>
+    abstract fun bindMovieDetailResponseMapper(movieDetailResponseMapper: MovieDetailResponseMapper): MovieDetectiveBaseMapper<MovieDetailDto, Content>
 
 
     @Binds
@@ -64,5 +71,17 @@ abstract class MapperModule {
 
     @Binds
     @ViewModelScoped
-    abstract fun bindVideoResponseListMapper(videoResponseMapper: VideoResponseMapper): MovieDetectiveListMapper<MovieVideoDto, Video>
+    abstract fun bindVideoResponseListMapper(videoResponseMapper: VideoResponseMapper): MovieDetectiveListMapper<VideoDto, Video>
+
+    @Binds
+    @ViewModelScoped
+    abstract fun bindSeriesResponseListMapper(seriesResponseListMapper: SeriesResponseListMapper): MovieDetectiveListMapper<SeriesDto, Content>
+
+    @Binds
+    @ViewModelScoped
+    abstract fun bindSeriesDetailResponseMapper(seriesDetailResponseMapper: SeriesDetailResponseMapper): MovieDetectiveBaseMapper<SeriesDetailDto, Content>
+
+    @Binds
+    @ViewModelScoped
+    abstract fun bindSeasonResponseListMapper(seasonResponseListMapper: SeasonResponseListMapper): MovieDetectiveListMapper<SeasonDto, Season>
 }

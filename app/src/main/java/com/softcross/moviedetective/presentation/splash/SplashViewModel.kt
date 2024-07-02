@@ -21,16 +21,19 @@ class SplashViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository
 ) : ViewModel() {
 
-    private val _state = mutableStateOf<ScreenState<Boolean>>(ScreenState.Loading)
-    val state: State<ScreenState<Boolean>> get() = _state
+    private val _movieGenreState = mutableStateOf<ScreenState<Boolean>>(ScreenState.Loading)
+    val movieGenreState: State<ScreenState<Boolean>> get() = _movieGenreState
 
+    private val _seriesGenreState = mutableStateOf<ScreenState<Boolean>>(ScreenState.Loading)
+    val seriesGenreState: State<ScreenState<Boolean>> get() = _seriesGenreState
 
     private val _userState = mutableStateOf(false)
     val userState: State<Boolean> get() = _userState
 
 
     init {
-        getCategories()
+        getMovieGenre()
+        getSeriesGenre()
     }
 
     fun getUserWithID(userID: String) = viewModelScope.launch {
@@ -39,22 +42,44 @@ class SplashViewModel @Inject constructor(
         _userState.value = true
     }
 
-    private fun getCategories() {
+    private fun getMovieGenre() {
         viewModelScope.launch {
             contentRepository.getMovieGenres().collect { result ->
                 when (result) {
                     is NetworkResponseState.Error -> {
-                        _state.value = ScreenState.Error(result.exception.message.toString())
+                        _movieGenreState.value = ScreenState.Error(result.exception.message.toString())
                     }
 
                     NetworkResponseState.Loading -> {
-                        _state.value = ScreenState.Loading
+                        _movieGenreState.value = ScreenState.Loading
                         delay(500)
                     }
 
                     is NetworkResponseState.Success -> {
                         GenreList.setMovieGenreList(result.result)
-                        _state.value = ScreenState.Success(true)
+                        _movieGenreState.value = ScreenState.Success(true)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getSeriesGenre() {
+        viewModelScope.launch {
+            contentRepository.getSeriesGenres().collect { result ->
+                when (result) {
+                    is NetworkResponseState.Error -> {
+                        _seriesGenreState.value = ScreenState.Error(result.exception.message.toString())
+                    }
+
+                    NetworkResponseState.Loading -> {
+                        _seriesGenreState.value = ScreenState.Loading
+                        delay(500)
+                    }
+
+                    is NetworkResponseState.Success -> {
+                        GenreList.setMovieGenreList(result.result)
+                        _seriesGenreState.value = ScreenState.Success(true)
                     }
                 }
             }

@@ -14,9 +14,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -31,6 +33,8 @@ import com.softcross.moviedetective.R
 import com.softcross.moviedetective.core.common.ScreenState
 import com.softcross.moviedetective.presentation.components.CustomSnackbar
 import com.softcross.moviedetective.presentation.components.CustomText
+import com.softcross.moviedetective.presentation.components.ErrorScreen
+import kotlinx.coroutines.flow.combine
 
 @Composable
 fun SplashScreen(
@@ -38,7 +42,6 @@ fun SplashScreen(
     onEntryNavigate: () -> Unit,
     onLogged: () -> Unit
 ) {
-    SplashAnimation()
     val context = LocalContext.current
     val stayLogged by remember {
         mutableStateOf(
@@ -51,25 +54,34 @@ fun SplashScreen(
             .getString("userID", "") ?: ""
         viewModel.getUserWithID(loggedUser)
     }
-
-    when (val state = viewModel.state.value) {
-        is ScreenState.Loading -> {}
-
-        is ScreenState.Success -> {
-            if (stayLogged) {
-                LaunchedEffect(key1 = viewModel.userState.value) {
-                    if (viewModel.userState.value) onLogged()
-                }
-            } else {
-                LaunchedEffect(key1 = state) {
-                    onEntryNavigate()
-                }
+    if (viewModel.movieGenreState.value is ScreenState.Loading && viewModel.seriesGenreState.value is ScreenState.Loading) {
+        SplashAnimation()
+    }
+    if (viewModel.movieGenreState.value is ScreenState.Success && viewModel.seriesGenreState.value is ScreenState.Success) {
+        if (stayLogged) {
+            LaunchedEffect(key1 = viewModel.userState.value) {
+                if (viewModel.userState.value) onLogged()
+            }
+        } else {
+            LaunchedEffect(
+                key1 = viewModel.movieGenreState.value,
+                key2 = viewModel.seriesGenreState.value
+            ) {
+                onEntryNavigate()
             }
         }
-
-        is ScreenState.Error -> {
-            CustomSnackbar(errorMessage = state.message, modifier = Modifier)
-        }
+    }
+    if (viewModel.movieGenreState.value is ScreenState.Error) {
+        ErrorScreen(
+            message = (viewModel.movieGenreState.value as ScreenState.Error).message,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+    if (viewModel.seriesGenreState.value is ScreenState.Error) {
+        ErrorScreen(
+            message = (viewModel.seriesGenreState.value as ScreenState.Error).message,
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }
 

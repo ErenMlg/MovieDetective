@@ -9,6 +9,6 @@ class GenreResponseListMapper @Inject constructor(): MovieDetectiveListMapper<Ge
     override fun map(input: List<GenreDto>): List<Genre> {
         return input.map {
             Genre(it.id, it.name)
-        }
+        }.toSet().toList()
     }
 }
